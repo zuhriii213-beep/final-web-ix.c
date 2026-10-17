@@ -87,12 +87,39 @@ body.admin .stu-img,body.admin #waliImg{outline:2px dashed #fbbf24}
       </div>
     </div>
   </section>
-  
+
+  <section id="anggota" class="py-12 px-4 md:px-6 max-w-6xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">Anggota KELAS IX.C</h2>
+    <p class="text-center text-slate-400 text-xs md:text-sm mb-8">Total 31 Siswa • (Mode Admin: Klik nama untuk edit, klik foto untuk ganti foto)</p>
+    <div id="stuGrid" class="grid grid-cols-3 gap-3 md:gap-6"></div>
+  </section>
+
   <section id="jadwal" class="py-12 px-6 max-w-6xl mx-auto">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Jadwal</h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-sm">
-      <div class="glass rounded-2xl p-5"><h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-book-open mr-2"></i>Jadwal Pelajaran</h3><table class="w-full text-left"><thead class="bg-blue-600 text-white"><tr><th class="p-2.5">Hari</th><th class="p-2.5">Mata Pelajaran</th></tr></thead><tbody id="tbPel" class="divide-y divide-slate-700"></tbody></table></div>
-      <div class="glass rounded-2xl p-5 space-y-2.5"><h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-broom mr-2"></i>Jadwal Piket</h3><div id="lsPik" class="space-y-2.5"></div></div>
+      <div class="glass rounded-2xl p-5">
+        <h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-book-open mr-2"></i>Jadwal Pelajaran</h3>
+        <table class="w-full text-left">
+          <thead class="bg-blue-600 text-white"><tr><th class="p-2.5">Hari</th><th class="p-2.5">Mata Pelajaran</th></tr></thead>
+          <tbody id="tbPel" class="divide-y divide-slate-700">
+            <tr><td class="p-2.5 font-bold">SENIN</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+            <tr><td class="p-2.5 font-bold">SELASA</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+            <tr><td class="p-2.5 font-bold">RABU</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+            <tr><td class="p-2.5 font-bold">KAMIS</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+            <tr><td class="p-2.5 font-bold">JUMAT</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+            <tr><td class="p-2.5 font-bold">SABTU</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="glass rounded-2xl p-5 space-y-2.5">
+        <h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-broom mr-2"></i>Jadwal Piket</h3>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>SENIN: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>SELASA: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>RABU: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>KAMIS: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>JUMAT: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>SABTU: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>
+      </div>
     </div>
   </section>
 
@@ -120,31 +147,12 @@ body.admin .stu-img,body.admin #waliImg{outline:2px dashed #fbbf24}
 <script>
 let activeImg = null;
 window.onload = function() {
-  // Selalu muat otomatis 31 siswa dan jadwal lengkap secara fresh
   let h = '';
   for (let i = 1; i <= 31; i++) {
     h += `<div class="glass rounded-2xl p-3 md:p-4 flex flex-col items-center text-center shadow-lg"><p class="ed font-bold text-xs md:text-base text-blue-300 mb-2.5">Siswa ${i}</p><img onclick="pickImg(this)" src="https://ui-avatars.com/api/?name=S+${i}&background=1e293b&color=60a5fa" class="stu-img w-20 h-20 md:w-28 md:h-28 rounded-2xl object-cover border-2 border-blue-400/60 cursor-pointer shadow"></div>`;
   }
   document.getElementById('stuGrid').innerHTML = h;
 
-  let days = ['SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'], pel = '', pik = '';
-  days.forEach(function(d, idx) {
-    pel += `<tr data-d="${idx+1}"><td class="p-2.5 font-bold">${d}</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>`;
-    pik += `<div data-d="${idx+1}" class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>${d}: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>`;
-  });
-  document.getElementById('tbPel').innerHTML = pel;
-  document.getElementById('lsPik').innerHTML = pik;
-
-  // Muat teks atau editan lain jika ada
-  let saved = localStorage.getItem('ixc_v26');
-  if (saved) {
-    let tmp = document.createElement('div');
-    tmp.innerHTML = saved;
-    // Ambil teks ber-kelas 'ed' yang sempat diedit admin jika ada
-  }
-
-  let curDay = new Date().getDay();
-  document.querySelectorAll(`[data-d="${curDay}"]`).forEach(function(e){ e.classList.add('today'); });
   let b = document.getElementById('bgm'), go = function(){ b.play().then(function(){ setB(true); }).catch(function(){}); };
   go(); document.addEventListener('click', go, {once:true}); document.addEventListener('touchstart', go, {once:true});
 };
@@ -175,12 +183,10 @@ function loginA() {
   }
 }
 function saveW() {
-  document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
-  localStorage.setItem('ixc_v26', document.getElementById('mainBox').innerHTML);
-  document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; }); alert('Tersimpan!');
+  alert('Tersimpan!');
 }
 function exitA() {
-  saveW(); document.body.classList.remove('admin'); 
+  document.body.classList.remove('admin'); 
   document.getElementById('admBar').classList.add('hidden');
   document.getElementById('btnTambahFoto').classList.add('hidden');
   document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
@@ -189,7 +195,6 @@ function exitA() {
 function readF(inp, cb) {
   if (inp.files && inp.files[0]) { let r = new FileReader(); r.onload = function(v){ cb(v.target.result); }; r.readAsDataURL(inp.files[0]); }
 }
-
 </script>
 </body>
 </html>
