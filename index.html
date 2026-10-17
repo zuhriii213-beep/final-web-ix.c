@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KELAS IX.C</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Poppins',sans-serif;background:radial-gradient(at 20% 15%,rgba(37,99,235,.25) 0,transparent 50%),#0f172a;color:#f8fafc}
+.glass{background:rgba(30,41,59,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12)}
+body.admin [contenteditable="true"]{outline:1px dashed #60a5fa;background:rgba(37,99,235,.2);border-radius:4px;padding:2px 4px}
+.today{background:rgba(37,99,235,.3)!important;border-color:#3b82f6!important}
+.del-btn{display:none}
+body.admin .del-btn{display:flex}
+body.admin .stu-img,body.admin #waliImg{outline:2px dashed #fbbf24}
+</style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+<div class="fixed bottom-4 left-4 z-50 flex gap-2">
+  <button onclick="toggleM()" class="bg-slate-800 border border-white/20 text-white px-4 py-2.5 rounded-full shadow-xl flex items-center gap-2 text-xs font-semibold">
+    <i id="mIcon" class="fa-solid fa-play text-blue-400"></i><span id="mTxt">Putar Musik</span>
+  </button>
+  <button onclick="document.getElementById('upM').click()" class="adm hidden bg-amber-500 text-slate-950 px-3 py-2.5 rounded-full text-xs font-bold">Ganti MP3</button>
+  <audio id="bgm" loop preload="auto" src="https://files.catbox.moe/gcgzd6.m4a"></audio>
+</div>
+
+<div id="admBar" class="hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white px-3 py-2 rounded-xl shadow-2xl flex items-center gap-2 text-xs">
+  <b>Admin</b>
+  <button onclick="saveW()" class="bg-emerald-500 px-2.5 py-1 rounded font-bold">Simpan</button>
+  <button onclick="exitA()" class="bg-rose-500 px-2.5 py-1 rounded font-bold">Keluar</button>
+</div>
+
+<nav class="fixed top-0 w-full z-40 bg-slate-900/80 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-5 py-3.5 flex justify-between items-center">
+    <a href="#beranda" class="text-xl font-extrabold text-blue-400">KELAS IX.C</a>
+    <div class="hidden md:flex items-center space-x-6 text-sm">
+      <a href="#beranda" class="hover:text-blue-400">Beranda</a><a href="#struktur" class="hover:text-blue-400">Struktur</a><a href="#anggota" class="hover:text-blue-400">Anggota</a><a href="#jadwal" class="hover:text-blue-400">Jadwal</a><a href="#galeri" class="hover:text-blue-400">Galeri</a><a href="#kontak" class="hover:text-blue-400">Kontak</a>
+      <button onclick="loginA()" class="bg-blue-600 text-white px-3.5 py-1.5 rounded-lg"><i class="fa-solid fa-user-shield mr-1"></i>Admin</button>
+    </div>
+    <button onclick="document.getElementById('mMenu').classList.toggle('hidden')" class="md:hidden text-white text-xl"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <div id="mMenu" class="hidden md:hidden bg-slate-900 px-6 py-3 space-y-2 text-sm border-b border-white/10">
+    <a href="#beranda" class="block">Beranda</a><a href="#struktur" class="block">Struktur</a><a href="#anggota" class="block">Anggota Kelas</a><a href="#jadwal" class="block">Jadwal</a><a href="#galeri" class="block">Galeri</a><a href="#kontak" class="block">Kontak</a>
+    <button onclick="loginA()" class="w-full bg-blue-600 text-white py-1.5 rounded-lg font-semibold">Login Admin</button>
+  </div>
+</nav>
+
+<main id="mainBox">
+  <section id="beranda" class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-16">
+    <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight"><span class="ed">KELAS IX.C</span></h1>
+    <p class="ed max-w-2xl text-slate-300 text-sm md:text-base mb-8">Komunitas pembelajar yang solid, kreatif, dan inovatif. Bersama meraih prestasi gemilang dan membangun masa depan yang cerah melalui pendidikan berkualitas.</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="#anggota" class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl"><i class="fa-solid fa-users mr-2"></i>Anggota Kelas</a>
+      <a href="#galeri" class="bg-slate-800 border border-slate-600 text-slate-200 font-semibold px-6 py-3 rounded-xl"><i class="fa-regular fa-images mr-2"></i>Lihat Galeri</a>
+    </div>
+  </section>
+
+  <section class="py-12 px-6 max-w-4xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Wali Kelas</h2>
+    <div class="glass rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6">
+      <img id="waliImg" onclick="pickImg(this)" src="https://ui-avatars.com/api/?name=WK&background=1e293b&color=60a5fa&size=200" class="w-32 h-32 object-cover rounded-2xl border-2 border-amber-400 cursor-pointer shadow-lg">
+      <div class="text-center md:text-left space-y-1.5">
+        <h3 class="ed text-2xl font-bold text-blue-400">Nama Wali Kelas</h3>
+        <p class="text-slate-300 text-sm"><i class="fa-solid fa-graduation-cap mr-2"></i><span class="ed">Wali Kelas KELAS IX.C</span></p>
+        <p class="text-slate-300 text-sm"><i class="fa-solid fa-envelope mr-2"></i><span class="ed">admin@gmail.com</span></p>
+        <p class="ed text-slate-300 text-sm italic">"Pendidikan adalah senjata paling ampuh untuk mengubah dunia"</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="struktur" class="py-12 px-6 max-w-5xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Struktur Kelas</h2>
+    <div class="glass rounded-2xl p-6 space-y-5 text-center">
+      <div class="max-w-xs mx-auto bg-blue-950/80 border-2 border-blue-400 rounded-xl p-3.5"><p class="text-xs font-bold text-blue-300">WALI KELAS</p><p class="ed text-sm font-semibold">Nama Wali Kelas</p></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
+        <div class="bg-cyan-950/80 border-2 border-cyan-400 rounded-xl p-3.5"><p class="text-xs font-bold text-cyan-300">KETUA KELAS</p><p class="ed text-sm font-bold">NAMA KETUA</p></div>
+        <div class="bg-cyan-950/80 border-2 border-cyan-400 rounded-xl p-3.5"><p class="text-xs font-bold text-cyan-300">WAKIL KETUA</p><p class="ed text-sm font-bold">NAMA WAKIL</p></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-emerald-950/80 border-2 border-emerald-400 rounded-xl p-3.5"><p class="text-xs font-bold text-emerald-300">BENDAHARA 1</p><p class="ed text-xs font-bold">NAMA</p></div>
+        <div class="bg-emerald-950/80 border-2 border-emerald-400 rounded-xl p-3.5"><p class="text-xs font-bold text-emerald-300">BENDAHARA 2</p><p class="ed text-xs font-bold">NAMA</p></div>
+        <div class="bg-rose-950/80 border-2 border-rose-400 rounded-xl p-3.5"><p class="text-xs font-bold text-rose-300">SEKRETARIS 1</p><p class="ed text-xs font-bold">NAMA</p></div>
+        <div class="bg-rose-950/80 border-2 border-rose-400 rounded-xl p-3.5"><p class="text-xs font-bold text-rose-300">SEKRETARIS 2</p><p class="ed text-xs font-bold">NAMA</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="anggota" class="py-12 px-4 md:px-6 max-w-6xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-2">Anggota KELAS IX.C</h2>
+    <p class="text-center text-slate-400 text-xs md:text-sm mb-8">Total 31 Siswa • (Mode Admin: Klik nama untuk edit, klik foto untuk ganti foto)</p>
+    <div id="stuGrid" class="grid grid-cols-3 gap-3 md:gap-6"></div>
+  </section>
+
+  <section id="jadwal" class="py-12 px-6 max-w-6xl mx-auto">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Jadwal</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-sm">
+      <div class="glass rounded-2xl p-5"><h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-book-open mr-2"></i>Jadwal Pelajaran</h3><table class="w-full text-left"><thead class="bg-blue-600 text-white"><tr><th class="p-2.5">Hari</th><th class="p-2.5">Mata Pelajaran</th></tr></thead><tbody id="tbPel" class="divide-y divide-slate-700"></tbody></table></div>
+      <div class="glass rounded-2xl p-5 space-y-2.5"><h3 class="text-base font-bold text-blue-400 mb-3"><i class="fa-solid fa-broom mr-2"></i>Jadwal Piket</h3><div id="lsPik" class="space-y-2.5"></div></div>
+    </div>
+  </section>
+
+  <section id="galeri" class="py-12 px-6 max-w-6xl mx-auto text-center">
+    <h2 class="text-2xl md:text-3xl font-bold mb-6">Album Kenangan</h2>
+    <button onclick="document.getElementById('upG').click()" class="adm hidden mb-5 mx-auto bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-xl">+ Tambah Foto</button>
+    <div id="galGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"></div>
+  </section>
+
+  <footer id="kontak" class="bg-slate-100 text-slate-800 py-10 px-6 mt-10 text-sm">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div><h3 class="ed text-xl font-extrabold text-blue-600 mb-2">Website Resmi Clas KELAS IX.C SMPN 1 SEKAR</h3><p class="ed text-slate-600">TAHUN AJARAN 2024/2025</p></div>
+      <div><h4 class="font-bold mb-2">Menu Cepat</h4><p><a href="#beranda">Beranda</a> • <a href="#struktur">Struktur</a> • <a href="#anggota">Anggota</a> • <a href="#jadwal">Jadwal</a> • <a href="#galeri">Galeri</a></p></div>
+      <div><h4 class="font-bold mb-2">Kontak</h4><p class="ed">COOMING SOON</p></div>
+    </div>
+    <div class="text-center text-xs text-slate-500 mt-8 border-t border-slate-300 pt-4 font-semibold">Dibuat Oleh Zux.Tech</div>
+  </footer>
+</main>
+
+<input type="file" id="upImg" accept="image/*" class="hidden">
+<input type="file" id="upG" accept="image/*" class="hidden" onchange="readF(this,addGalItem)">
+<input type="file" id="upM" accept="audio/*" class="hidden" onchange="readF(this,function(s){let b=document.getElementById('bgm');b.src=s;b.play();setB(true)})">
+<div id="zBox" onclick="this.classList.add('hidden')" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"><img id="zImg" class="max-w-full max-h-[85vh] rounded-2xl"></div>
+
+<script>
+let activeImg = null;
+window.onload = function() {
+  let saved = localStorage.getItem('ixc_v99');
+  if (saved) { document.getElementById('mainBox').innerHTML = saved; }
+  else {
+    let h = '';
+    for (let i = 1; i <= 31; i++) {
+      h += `<div class="glass rounded-2xl p-3 md:p-4 flex flex-col items-center text-center shadow-lg"><p class="ed font-bold text-xs md:text-base text-blue-300 mb-2.5">Siswa ${i}</p><img onclick="pickImg(this)" src="https://ui-avatars.com/api/?name=S+${i}&background=1e293b&color=60a5fa" class="stu-img w-20 h-20 md:w-28 md:h-28 rounded-2xl object-cover border-2 border-blue-400/60 cursor-pointer shadow"></div>`;
+    }
+    document.getElementById('stuGrid').innerHTML = h;
+    let days = ['SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'], pel = '', pik = '';
+    days.forEach(function(d, idx) {
+      pel += `<tr data-d="${idx+1}"><td class="p-2.5 font-bold">${d}</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>`;
+      pik += `<div data-d="${idx+1}" class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>${d}: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>`;
+    });
+    document.getElementById('tbPel').innerHTML = pel;
+    document.getElementById('lsPik').innerHTML = pik;
+  }
+  let curDay = new Date().getDay();
+  document.querySelectorAll(`[data-d="${curDay}"]`).forEach(function(e){ e.classList.add('today'); });
+  let b = document.getElementById('bgm'), go = function(){ b.play().then(function(){ setB(true); }).catch(function(){}); };
+  go(); document.addEventListener('click', go, {once:true}); document.addEventListener('touchstart', go, {once:true});
+};
+function pickImg(el) {
+  if (!document.body.classList.contains('admin')) { zoom(el.src); return; }
+  activeImg = el; let inp = document.getElementById('upImg');
+  inp.onchange = function() { readF(inp, function(s){ activeImg.src = s; }); }; inp.click();
+}
+function setB(p) {
+  document.getElementById('mIcon').className = p ? 'fa-solid fa-pause text-emerald-400' : 'fa-solid fa-play text-blue-400';
+  document.getElementById('mTxt').innerText = p ? 'Musik Menyala' : 'Putar Musik';
+}
+function toggleM() { let b = document.getElementById('bgm'); b.paused ? (b.play(), setB(true)) : (b.pause(), setB(false)); }
+function zoom(s) { document.getElementById('zImg').src = s; document.getElementById('zBox').classList.remove('hidden'); }
+function addGalItem(src) {
+  let w = document.createElement('div'); w.className = 'relative group overflow-hidden rounded-2xl border border-white/15';
+  w.innerHTML = `<img onclick="zoom('${src}')" src="${src}" class="w-full h-52 object-cover cursor-pointer"><button onclick="this.parentElement.remove()" class="del-btn absolute top-2 right-2 bg-rose-600 text-white w-8 h-8 rounded-full items-center justify-center shadow-lg"><i class="fa-solid fa-trash"></i></button>`;
+  document.getElementById('galGrid').appendChild(w);
+}
+function loginA() {
+  if (prompt('Password Admin:') === 'admin123') {
+    document.body.classList.add('admin'); document.getElementById('admBar').classList.remove('hidden');
+    document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; });
+    document.querySelectorAll('.adm').forEach(function(e){ e.classList.remove('hidden'); });
+  }
+}
+function saveW() {
+  document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
+  localStorage.setItem('ixc_v99', document.getElementById('mainBox').innerHTML);
+  document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; }); alert('Tersimpan!');
+}
+function exitA() {
+  saveW(); document.body.classList.remove('admin'); document.getElementById('admBar').classList.add('hidden');
+  document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
+  document.querySelectorAll('.adm').forEach(function(e){ e.classList.add('hidden'); });
+}
+function readF(inp, cb) {
+  if (inp.files && inp.files[0]) { let r = new FileReader(); r.onload = function(v){ cb(v.target.result); }; r.readAsDataURL(inp.files[0]); }
+}
+</script>
+</body>
+</html>
