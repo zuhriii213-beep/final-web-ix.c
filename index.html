@@ -105,7 +105,7 @@ body.admin .stu-img,body.admin #waliImg{outline:2px dashed #fbbf24}
 
   <section id="galeri" class="py-12 px-6 max-w-6xl mx-auto text-center">
     <h2 class="text-2xl md:text-3xl font-bold mb-6">Album Kenangan</h2>
-    <button id="btnTambahFoto" onclick="document.getElementById('upG').click()" class="adm hidden mb-5 mx-auto bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-xl">+ Tambah Foto</button>
+    <button id="btnTambahFoto" onclick="document.getElementById('upG').click()" class="hidden mb-5 mx-auto bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-xl">+ Tambah Foto</button>
     <div id="galGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5"></div>
   </section>
 
@@ -127,7 +127,7 @@ body.admin .stu-img,body.admin #waliImg{outline:2px dashed #fbbf24}
 <script>
 let activeImg = null;
 window.onload = function() {
-  let saved = localStorage.getItem('ixc_v27');
+  let saved = localStorage.getItem('ixc_v28');
   if (saved) { document.getElementById('mainBox').innerHTML = saved; }
   else {
     let h = '';
@@ -145,7 +145,17 @@ window.onload = function() {
   }
   let curDay = new Date().getDay();
   document.querySelectorAll(`[data-d="${curDay}"]`).forEach(function(e){ e.classList.add('today'); });
+
+  // FITUR AUTOPLAY MUSIK SAAT DIBUKA
+  let b = document.getElementById('bgm');
+  let go = function() {
+    b.play().then(function() { setB(true); }).catch(function(){});
+  };
+  go();
+  document.addEventListener('click', go, {once:true});
+  document.addEventListener('touchstart', go, {once:true});
 };
+
 function pickImg(el) {
   if (!document.body.classList.contains('admin')) { zoom(el.src); return; }
   activeImg = el; let inp = document.getElementById('upImg');
@@ -157,7 +167,7 @@ function setB(p) {
 }
 function toggleM() { 
   let b = document.getElementById('bgm'); 
-  if (b.paused) { b.play().then(() => setB(true)).catch(() => {}); } 
+  if (b.paused) { b.play().then(function(){ setB(true); }).catch(function(){}); } 
   else { b.pause(); setB(false); } 
 }
 function zoom(s) { document.getElementById('zImg').src = s; document.getElementById('zBox').classList.remove('hidden'); }
@@ -178,7 +188,7 @@ function loginA() {
 }
 function saveW() {
   document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
-  localStorage.setItem('ixc_v27', document.getElementById('mainBox').innerHTML);
+  localStorage.setItem('ixc_v28', document.getElementById('mainBox').innerHTML);
   document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; }); alert('Tersimpan!');
 }
 function exitA() {
@@ -194,6 +204,6 @@ function readF(inp, cb) {
 }
 </script>
 </body>
-  </html>
-  
+      </html>
+
   
