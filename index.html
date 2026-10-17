@@ -125,9 +125,32 @@ body.admin .adm { display: block !important; }
 <script>
 let activeImg = null;
 window.onload = function() {
-  // Sembunyikan tombol tambah foto secara paksa saat pertama kali dibuka
+  // Cek apakah ada data editan admin yang tersimpan di memori
+  let saved = localStorage.getItem('ixc_v29');
+  if (saved) {
+    document.getElementById('mainBox').innerHTML = saved;
+  } else {
+    // Jika belum ada, buat otomatis 31 siswa dan jadwal lengkap
+    let h = '';
+    for (let i = 1; i <= 31; i++) {
+      h += `<div class="glass rounded-2xl p-3 md:p-4 flex flex-col items-center text-center shadow-lg"><p class="ed font-bold text-xs md:text-base text-blue-300 mb-2.5">Siswa ${i}</p><img onclick="pickImg(this)" src="https://ui-avatars.com/api/?name=S+${i}&background=1e293b&color=60a5fa" class="stu-img w-20 h-20 md:w-28 md:h-28 rounded-2xl object-cover border-2 border-blue-400/60 cursor-pointer shadow"></div>`;
+    }
+    document.getElementById('stuGrid').innerHTML = h;
+
+    let days = ['SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'], pel = '', pik = '';
+    days.forEach(function(d, idx) {
+      pel += `<tr data-d="${idx+1}"><td class="p-2.5 font-bold">${d}</td><td class="ed p-2.5">Pelajaran 1, Pelajaran 2</td></tr>`;
+      pik += `<div data-d="${idx+1}" class="bg-slate-800/80 border border-slate-700 rounded-xl p-2.5"><b>${d}: </b><span class="ed text-slate-300">Nama Anggota Piket</span></div>`;
+    });
+    document.getElementById('tbPel').innerHTML = pel;
+    document.getElementById('lsPik').innerHTML = pik;
+  }
+
   let btn = document.getElementById('btnTambahFoto');
   if(btn) btn.style.display = 'none';
+
+  let curDay = new Date().getDay();
+  document.querySelectorAll(`[data-d="${curDay}"]`).forEach(function(e){ e.classList.add('today'); });
 
   let b = document.getElementById('bgm'), go = function(){ b.play().catch(function(){}); };
   go(); document.addEventListener('click', go, {once:true}); document.addEventListener('touchstart', go, {once:true});
@@ -158,19 +181,24 @@ function loginA() {
     document.body.classList.add('admin'); 
     document.getElementById('admBar').classList.remove('hidden');
     let btn = document.getElementById('btnTambahFoto');
-    if(btn) btn.style.display = 'block'; // Tombol MUNCAK/MUNCUL pas login admin
+    if(btn) btn.style.display = 'block';
     document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; });
     document.querySelectorAll('.adm').forEach(function(e){ e.classList.remove('hidden'); });
   }
 }
 function saveW() {
-  alert('Tersimpan!');
+  document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
+  // Menyimpan seluruh editan teks ke memori permanen browser
+  localStorage.setItem('ixc_v29', document.getElementById('mainBox').innerHTML);
+  document.querySelectorAll('.ed').forEach(function(e){ e.contentEditable = true; }); 
+  alert('Berhasil Disimpan!');
 }
 function exitA() {
+  saveW(); 
   document.body.classList.remove('admin'); 
   document.getElementById('admBar').classList.add('hidden');
   let btn = document.getElementById('btnTambahFoto');
-  if(btn) btn.style.display = 'none'; // Tombol HILANG pas keluar admin
+  if(btn) btn.style.display = 'none';
   document.querySelectorAll('.ed').forEach(function(e){ e.removeAttribute('contenteditable'); });
   document.querySelectorAll('.adm').forEach(function(e){ e.classList.add('hidden'); });
 }
