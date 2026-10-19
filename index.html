@@ -49,7 +49,7 @@
       outline: 1.5px dashed #60a5fa !important;
       background: rgba(37, 99, 235, 0.18) !important;
       border-radius: 6px;
-      padding: 3px 6px;
+      padding: 2px 6px;
       cursor: text;
     }
     ::-webkit-scrollbar { width: 8px; }
@@ -159,23 +159,27 @@
     </div>
   </section>
 
-  <!-- STRUKTUR KELAS -->
+  <!-- STRUKTUR KELAS (LANGSUNG KETIK SAAT MODE ADMIN) -->
   <section id="struktur" class="py-12 px-4 max-w-4xl mx-auto">
     <div class="text-center mb-8">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Struktur Organisasi</h2>
-      <p class="text-xs sm:text-sm text-slate-400 mt-1">Pengurus inti kelas yang mengkoordinasikan kegiatan belajar & ketertiban</p>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Pengurus inti kelas. (Mode Admin: Klik langsung namanya untuk mengedit)</p>
     </div>
 
     <div class="space-y-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="glass-card rounded-xl p-4 border-l-4 border-l-blue-500 relative">
           <span class="text-[10px] font-bold tracking-widest text-blue-400 uppercase">Ketua Kelas</span>
-          <div class="text-base font-bold text-white mt-1" id="orgKetua">Ahmad Fauzan</div>
+          <div class="text-base font-bold text-white mt-1 outline-none" 
+               id="orgKetua" 
+               onblur="updateStrukturField('ketua', this.innerText)">Ahmad Fauzan</div>
           <p class="text-xs text-slate-400">Koordinator Utama</p>
         </div>
         <div class="glass-card rounded-xl p-4 border-l-4 border-l-cyan-500 relative">
           <span class="text-[10px] font-bold tracking-widest text-cyan-400 uppercase">Wakil Ketua</span>
-          <div class="text-base font-bold text-white mt-1" id="orgWakil">Nabila Rahmawati</div>
+          <div class="text-base font-bold text-white mt-1 outline-none" 
+               id="orgWakil" 
+               onblur="updateStrukturField('wakil', this.innerText)">Nabila Rahmawati</div>
           <p class="text-xs text-slate-400">Pendamping Koordinator</p>
         </div>
       </div>
@@ -183,24 +187,28 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
           <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 1</span>
-          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgSek1">Putri Lestari</div>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" 
+               id="orgSek1" 
+               onblur="updateStrukturField('sek1', this.innerText)">Putri Lestari</div>
         </div>
         <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
           <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 2</span>
-          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgSek2">Bagas Pratama</div>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" 
+               id="orgSek2" 
+               onblur="updateStrukturField('sek2', this.innerText)">Bagas Pratama</div>
         </div>
         <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
           <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 1</span>
-          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgBen1">Siti Nurhaliza</div>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" 
+               id="orgBen1" 
+               onblur="updateStrukturField('ben1', this.innerText)">Siti Nurhaliza</div>
         </div>
         <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
           <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 2</span>
-          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgBen2">Dimas Saputra</div>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" 
+               id="orgBen2" 
+               onblur="updateStrukturField('ben2', this.innerText)">Dimas Saputra</div>
         </div>
-      </div>
-      
-      <div class="adm-only hidden text-right pt-1">
-        <button onclick="editStrukturModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg font-medium transition"><i class="fa-solid fa-pen mr-1"></i>Ubah Struktur</button>
       </div>
     </div>
   </section>
@@ -499,13 +507,31 @@
       document.getElementById('waliPhoto').src = appState.wali.photo;
     }
 
+    // STRUKTUR ORGANISASI: SET TEKS & ATRIBUT CONTENTEDITABLE
     function renderStruktur() {
-      document.getElementById('orgKetua').innerText = appState.struktur.ketua;
-      document.getElementById('orgWakil').innerText = appState.struktur.wakil;
-      document.getElementById('orgSek1').innerText = appState.struktur.sek1;
-      document.getElementById('orgSek2').innerText = appState.struktur.sek2;
-      document.getElementById('orgBen1').innerText = appState.struktur.ben1;
-      document.getElementById('orgBen2').innerText = appState.struktur.ben2;
+      const keys = ['ketua', 'wakil', 'sek1', 'sek2', 'ben1', 'ben2'];
+      const mapId = {
+        ketua: 'orgKetua',
+        wakil: 'orgWakil',
+        sek1: 'orgSek1',
+        sek2: 'orgSek2',
+        ben1: 'orgBen1',
+        ben2: 'orgBen2'
+      };
+
+      keys.forEach(k => {
+        const el = document.getElementById(mapId[k]);
+        if (el) {
+          el.innerText = appState.struktur[k];
+          el.contentEditable = currentAdminToken;
+          el.title = currentAdminToken ? 'Klik untuk langsung edit nama' : '';
+        }
+      });
+    }
+
+    function updateStrukturField(field, newText) {
+      appState.struktur[field] = newText.trim();
+      persistState();
     }
 
     function renderStats() {
@@ -665,6 +691,7 @@
         document.getElementById('adminDock').classList.remove('hidden');
         document.getElementById('navAdminLabel').innerText = 'Admin Aktif';
         toggleModal('modalAdminLogin', false);
+        renderStruktur();
         renderJadwal();
         renderGaleri();
       } else {
@@ -679,6 +706,7 @@
       document.querySelectorAll('.adm-only').forEach(el => el.classList.add('hidden'));
       document.getElementById('adminDock').classList.add('hidden');
       document.getElementById('navAdminLabel').innerText = 'Admin';
+      renderStruktur();
       renderJadwal();
       renderGaleri();
     }
@@ -695,22 +723,6 @@
 
       persistState();
       renderWali();
-    }
-
-    function editStrukturModal() {
-      const ketua = prompt("Ketua Kelas:", appState.struktur.ketua);
-      if (ketua === null) return;
-      const wakil = prompt("Wakil Ketua:", appState.struktur.wakil);
-      const sek1 = prompt("Sekretaris 1:", appState.struktur.sek1);
-      const ben1 = prompt("Bendahara 1:", appState.struktur.ben1);
-
-      if (ketua) appState.struktur.ketua = ketua;
-      if (wakil) appState.struktur.wakil = wakil;
-      if (sek1) appState.struktur.sek1 = sek1;
-      if (ben1) appState.struktur.ben1 = ben1;
-
-      persistState();
-      renderStruktur();
     }
 
     function triggerUpload(context) {
