@@ -1,3 +1,4 @@
+<!-- language: HTML, file: index.html, target: Standalone Production Web -->
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
@@ -42,6 +43,14 @@
     .today-highlight {
       background: linear-gradient(135deg, rgba(37,99,235,0.3) 0%, rgba(14,165,233,0.15) 100%) !important;
       border: 1px solid #38bdf8 !important;
+    }
+    /* Mode Admin: Efek kotak yang bisa langsung diketik */
+    body.admin-mode [contenteditable="true"] {
+      outline: 1.5px dashed #60a5fa !important;
+      background: rgba(37, 99, 235, 0.18) !important;
+      border-radius: 6px;
+      padding: 3px 6px;
+      cursor: text;
     }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #090d16; }
@@ -212,14 +221,15 @@
     <div id="stuGridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
   </section>
 
-  <!-- JADWAL -->
+  <!-- JADWAL (PELAJARAN & PIKET) -->
   <section id="jadwal" class="py-12 px-4 max-w-6xl mx-auto">
     <div class="text-center mb-8">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Agenda & Jadwal Mingguan</h2>
-      <p class="text-xs sm:text-sm text-slate-400 mt-1">Hari aktif saat ini ditandai otomatis</p>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Hari aktif saat ini ditandai otomatis. (Mode Admin: Klik langsung teksnya untuk mengedit)</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Jadwal Pelajaran -->
       <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex justify-between items-center mb-4">
@@ -230,11 +240,9 @@
           </div>
           <div id="pelajaranList" class="space-y-2"></div>
         </div>
-        <div class="adm-only hidden pt-4 text-right">
-          <button onclick="editJadwalModal('pelajaran')" class="text-xs bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg text-white font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Pelajaran</button>
-        </div>
       </div>
 
+      <!-- Jadwal Piket -->
       <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex justify-between items-center mb-4">
@@ -244,9 +252,6 @@
             <span class="text-[11px] text-slate-400">Rotasi Harian</span>
           </div>
           <div id="piketList" class="space-y-2"></div>
-        </div>
-        <div class="adm-only hidden pt-4 text-right">
-          <button onclick="editJadwalModal('piket')" class="text-xs bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg text-white font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Piket</button>
         </div>
       </div>
     </div>
@@ -392,7 +397,7 @@
 
   <input type="file" id="generalFileInput" accept="image/*" class="hidden">
 
-  <!-- SCRIPT -->
+  <!-- ENGINE JAVASCRIPT -->
   <script>
     const STORAGE_KEY = 'spensakar_ixc_data_v1';
     let currentAdminToken = false;
@@ -534,6 +539,7 @@
       });
     }
 
+    // JADWAL DENGAN INLINE EDITING (KLIK LANGSUNG KETIK SAAT ADMIN AKTIF)
     function renderJadwal() {
       const todayIndex = new Date().getDay();
       const pelContainer = document.getElementById('pelajaranList');
@@ -542,27 +548,45 @@
       pelContainer.innerHTML = '';
       pikContainer.innerHTML = '';
 
+      // Pelajaran
       appState.jadwalPelajaran.forEach((p, idx) => {
         const isToday = (todayIndex === idx + 1);
         const row = document.createElement('div');
         row.className = `p-3 rounded-xl border text-xs flex justify-between items-center transition ${isToday ? 'today-highlight' : 'bg-slate-900/60 border-white/5'}`;
         row.innerHTML = `
           <div class="font-bold tracking-wide ${isToday ? 'text-white' : 'text-slate-400'} w-20">${p.hari}</div>
-          <div class="text-right font-medium text-slate-200 flex-1">${p.mapel}</div>
+          <div class="text-right font-medium text-slate-200 flex-1 outline-none"
+               contenteditable="${currentAdminToken}"
+               onblur="updatePelajaranText(${idx}, this.innerText)"
+               title="${currentAdminToken ? 'Klik untuk langsung edit pelajaran' : ''}">${p.mapel}</div>
         `;
         pelContainer.appendChild(row);
       });
 
+      // Piket
       appState.jadwalPiket.forEach((pk, idx) => {
         const isToday = (todayIndex === idx + 1);
         const row = document.createElement('div');
         row.className = `p-3 rounded-xl border text-xs flex justify-between items-center transition ${isToday ? 'today-highlight' : 'bg-slate-900/60 border-white/5'}`;
         row.innerHTML = `
           <div class="font-bold tracking-wide ${isToday ? 'text-white' : 'text-slate-400'} w-20">${pk.hari}</div>
-          <div class="text-right text-slate-300 flex-1">${pk.anggota}</div>
+          <div class="text-right text-slate-300 flex-1 outline-none"
+               contenteditable="${currentAdminToken}"
+               onblur="updatePiketText(${idx}, this.innerText)"
+               title="${currentAdminToken ? 'Klik untuk langsung edit piket' : ''}">${pk.anggota}</div>
         `;
         pikContainer.appendChild(row);
       });
+    }
+
+    function updatePelajaranText(index, newText) {
+      appState.jadwalPelajaran[index].mapel = newText.trim();
+      persistState();
+    }
+
+    function updatePiketText(index, newText) {
+      appState.jadwalPiket[index].anggota = newText.trim();
+      persistState();
     }
 
     function renderGaleri() {
@@ -636,10 +660,12 @@
       const pass = document.getElementById('inputAdminPassword').value;
       if (pass === 'admin123') {
         currentAdminToken = true;
+        document.body.classList.add('admin-mode');
         document.querySelectorAll('.adm-only').forEach(el => el.classList.remove('hidden'));
         document.getElementById('adminDock').classList.remove('hidden');
         document.getElementById('navAdminLabel').innerText = 'Admin Aktif';
         toggleModal('modalAdminLogin', false);
+        renderJadwal();
         renderGaleri();
       } else {
         alert('Password keliru.');
@@ -649,9 +675,11 @@
 
     function exitAdmin() {
       currentAdminToken = false;
+      document.body.classList.remove('admin-mode');
       document.querySelectorAll('.adm-only').forEach(el => el.classList.add('hidden'));
       document.getElementById('adminDock').classList.add('hidden');
       document.getElementById('navAdminLabel').innerText = 'Admin';
+      renderJadwal();
       renderGaleri();
     }
 
@@ -683,34 +711,6 @@
 
       persistState();
       renderStruktur();
-    }
-
-    function editJadwalModal(type) {
-      if (type === 'pelajaran') {
-        const raw = prompt("Format edit: Hari|Mata Pelajaran (pisahkan baris baru dengan koma). Contoh:\nSENIN|Matematika, IPA", 
-          appState.jadwalPelajaran.map(j => `${j.hari}|${j.mapel}`).join(';')
-        );
-        if (raw) {
-          appState.jadwalPelajaran = raw.split(';').map(item => {
-            const parts = item.split('|');
-            return { hari: (parts[0] || '').trim(), mapel: (parts[1] || '').trim() };
-          });
-          persistState();
-          renderJadwal();
-        }
-      } else {
-        const raw = prompt("Format edit: Hari|Daftar Nama Piket (pisahkan baris baru dengan titik koma ';')", 
-          appState.jadwalPiket.map(j => `${j.hari}|${j.anggota}`).join(';')
-        );
-        if (raw) {
-          appState.jadwalPiket = raw.split(';').map(item => {
-            const parts = item.split('|');
-            return { hari: (parts[0] || '').trim(), anggota: (parts[1] || '').trim() };
-          });
-          persistState();
-          renderJadwal();
-        }
-      }
     }
 
     function triggerUpload(context) {
