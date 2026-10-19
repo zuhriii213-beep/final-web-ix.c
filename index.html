@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KELAS IX.C — SMPN 1 SEKAR</title>
+  <meta name="google-site-verification" content="fJ6vXykYANwYGecPJ0HcVpHA43-2_1frO6wKLhONZyc">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at 15% 10%, rgba(37,99,235,0.18) 0, transparent 40%),
+                  radial-gradient(circle at 85% 60%, rgba(14,165,233,0.12) 0, transparent 40%),
+                  #090d16;
+      color: #f1f5f9;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card:hover {
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    .today-highlight {
+      background: linear-gradient(135deg, rgba(37,99,235,0.3) 0%, rgba(14,165,233,0.15) 100%) !important;
+      border: 1px solid #38bdf8 !important;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-blue-600 selection:text-white relative">
+
+  <!-- TOP NAVBAR -->
+  <header class="fixed top-0 w-full z-40 bg-slate-950/80 backdrop-blur-lg border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+      <a href="#beranda" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-extrabold text-white shadow-lg shadow-blue-500/30 group-hover:scale-105 transition">9C</div>
+        <span class="font-bold tracking-tight text-base sm:text-lg text-white">IX.C <span class="text-blue-400 font-medium text-xs sm:text-sm">SEKAR</span></span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#beranda" class="hover:text-blue-400 transition">Beranda</a>
+        <a href="#struktur" class="hover:text-blue-400 transition">Struktur</a>
+        <a href="#anggota" class="hover:text-blue-400 transition">Anggota</a>
+        <a href="#jadwal" class="hover:text-blue-400 transition">Jadwal</a>
+        <a href="#galeri" class="hover:text-blue-400 transition">Galeri</a>
+        <button onclick="toggleModal('modalAdminLogin')" class="px-3.5 py-1.5 rounded-lg bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold">
+          <i class="fa-solid fa-lock text-[10px]"></i> <span id="navAdminLabel">Admin</span>
+        </button>
+      </nav>
+
+      <button onclick="document.getElementById('mobileNav').classList.toggle('hidden')" class="md:hidden text-slate-300 p-2 text-lg">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobileNav" class="hidden md:hidden px-4 py-3 bg-slate-950 border-b border-white/10 space-y-2 text-sm">
+      <a href="#beranda" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Beranda</a>
+      <a href="#struktur" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Struktur</a>
+      <a href="#anggota" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Anggota</a>
+      <a href="#jadwal" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Jadwal</a>
+      <a href="#galeri" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Galeri</a>
+      <button onclick="toggleMobileNav(); toggleModal('modalAdminLogin')" class="w-full text-left py-2 text-blue-400 font-semibold border-t border-slate-800">Login Admin</button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="beranda" class="pt-32 pb-20 px-4 max-w-5xl mx-auto text-center flex flex-col items-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-500/30 text-blue-400 text-xs font-medium mb-6 animate-pulse">
+      <span class="w-2 h-2 rounded-full bg-blue-400"></span> Tahun Ajaran 2024/2025
+    </div>
+    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6">
+      Generasi Emas <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Kelas IX.C</span>
+    </h1>
+    <p class="max-w-2xl text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
+      Wadah kebersamaan, kreativitas, dan inovasi siswa-siswi SMPN 1 Sekar. Berkomitmen menorehkan prestasi terbaik dan mengukir kenangan abadi.
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="#anggota" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition shadow-lg shadow-blue-600/30">
+        <i class="fa-solid fa-users mr-2"></i>Daftar Siswa
+      </a>
+      <a href="#jadwal" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold text-sm transition">
+        <i class="fa-solid fa-calendar-days mr-2"></i>Lihat Jadwal
+      </a>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-3xl mt-16 text-left">
+      <div class="glass-card p-4 rounded-xl">
+        <div class="text-2xl font-extrabold text-white" id="statTotalStudents">31</div>
+        <div class="text-xs text-slate-400 font-medium">Total Anggota</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="text-2xl font-extrabold text-blue-400" id="statMaleStudents">15</div>
+        <div class="text-xs text-slate-400 font-medium">Siswa Putra</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="text-2xl font-extrabold text-cyan-400" id="statFemaleStudents">16</div>
+        <div class="text-xs text-slate-400 font-medium">Siswa Putri</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="text-2xl font-extrabold text-amber-400">100%</div>
+        <div class="text-xs text-slate-400 font-medium">Kekompakan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WALI KELAS -->
+  <section class="py-12 px-4 max-w-4xl mx-auto">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden">
+      <div class="relative group">
+        <img id="waliPhoto" src="https://ui-avatars.com/api/?name=Wali+Kelas&background=1e293b&color=60a5fa&size=240" alt="Wali Kelas" class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover border-2 border-blue-500/30 shadow-xl">
+        <button onclick="triggerUpload('wali')" class="adm-only hidden absolute inset-0 bg-black/60 rounded-2xl flex flex-col items-center justify-center text-xs font-semibold text-amber-300 opacity-90 transition">
+          <i class="fa-solid fa-camera mb-1 text-base"></i> Ganti Foto
+        </button>
+      </div>
+
+      <div class="space-y-2 text-center sm:text-left flex-1">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded-md border border-blue-500/20">Wali Kelas IX.C</span>
+        <h3 id="waliName" class="text-2xl font-bold text-white tracking-tight">Nama Wali Kelas, S.Pd.</h3>
+        <p id="waliNip" class="text-xs text-slate-400 font-mono">NIP. 19820315 200801 1 004</p>
+        <p id="waliQuote" class="text-sm italic text-slate-300 pt-2 border-t border-white/5">"Disiplin adalah jembatan antara cita-cita dan pencapaian."</p>
+        <div class="adm-only hidden pt-2">
+          <button onclick="editWaliModal()" class="text-xs bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg font-semibold text-white transition"><i class="fa-solid fa-pen-to-square mr-1"></i>Edit Data Wali Kelas</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRUKTUR KELAS -->
+  <section id="struktur" class="py-12 px-4 max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Struktur Organisasi</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Pengurus inti kelas yang mengkoordinasikan kegiatan belajar & ketertiban</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="glass-card rounded-xl p-4 border-l-4 border-l-blue-500 relative">
+          <span class="text-[10px] font-bold tracking-widest text-blue-400 uppercase">Ketua Kelas</span>
+          <div class="text-base font-bold text-white mt-1" id="orgKetua">Ahmad Fauzan</div>
+          <p class="text-xs text-slate-400">Koordinator Utama</p>
+        </div>
+        <div class="glass-card rounded-xl p-4 border-l-4 border-l-cyan-500 relative">
+          <span class="text-[10px] font-bold tracking-widest text-cyan-400 uppercase">Wakil Ketua</span>
+          <div class="text-base font-bold text-white mt-1" id="orgWakil">Nabila Rahmawati</div>
+          <p class="text-xs text-slate-400">Pendamping Koordinator</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 1</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgSek1">Putri Lestari</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 2</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgSek2">Bagas Pratama</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
+          <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 1</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgBen1">Siti Nurhaliza</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
+          <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 2</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5" id="orgBen2">Dimas Saputra</div>
+        </div>
+      </div>
+      
+      <div class="adm-only hidden text-right pt-1">
+        <button onclick="editStrukturModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg font-medium transition"><i class="fa-solid fa-pen mr-1"></i>Ubah Struktur</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANGGOTA SISWA -->
+  <section id="anggota" class="py-12 px-4 max-w-6xl mx-auto">
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Daftar Anggota</h2>
+        <p class="text-xs sm:text-sm text-slate-400">Klik kartu siswa untuk melihat profil lengkap</p>
+      </div>
+      <div class="w-full sm:w-72 relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input type="text" id="stuSearchInput" onkeyup="filterStudents()" placeholder="Cari nama atau absen..." class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-blue-500 text-white placeholder-slate-500">
+      </div>
+    </div>
+
+    <div id="stuGridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
+  </section>
+
+  <!-- JADWAL -->
+  <section id="jadwal" class="py-12 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Agenda & Jadwal Mingguan</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Hari aktif saat ini ditandai otomatis</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark text-blue-400"></i> Jadwal Pelajaran
+            </h3>
+            <span class="text-[11px] text-slate-400">Senin - Sabtu</span>
+          </div>
+          <div id="pelajaranList" class="space-y-2"></div>
+        </div>
+        <div class="adm-only hidden pt-4 text-right">
+          <button onclick="editJadwalModal('pelajaran')" class="text-xs bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg text-white font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Pelajaran</button>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-broom text-cyan-400"></i> Jadwal Piket Kebersihan
+            </h3>
+            <span class="text-[11px] text-slate-400">Rotasi Harian</span>
+          </div>
+          <div id="piketList" class="space-y-2"></div>
+        </div>
+        <div class="adm-only hidden pt-4 text-right">
+          <button onclick="editJadwalModal('piket')" class="text-xs bg-blue-600/80 hover:bg-blue-600 px-3 py-1.5 rounded-lg text-white font-semibold"><i class="fa-solid fa-pen mr-1"></i>Edit Piket</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section id="galeri" class="py-12 px-4 max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Album Kenangan</h2>
+        <p class="text-xs sm:text-sm text-slate-400">Dokumentasi momen berharga kelas IX.C</p>
+      </div>
+      <button onclick="document.getElementById('inputGaleri').click()" class="adm-only hidden px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30">
+        <i class="fa-solid fa-plus"></i> Upload Foto
+      </button>
+      <input type="file" id="inputGaleri" accept="image/*" class="hidden" onchange="uploadFotoGaleri(event)">
+    </div>
+
+    <div id="galeriGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="kontak" class="mt-20 border-t border-slate-900 bg-slate-950/70 py-12 px-4 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs">9C</div>
+          <span class="font-bold text-white text-sm">SMP NEGERI 1 SEKAR</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">Website kenangan dan pusat informasi kegiatan kelas IX.C. Kompak, santun, berprestasi.</p>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-3 text-sm">Tautan Cepat</h4>
+        <ul class="space-y-1.5">
+          <li><a href="#beranda" class="hover:text-blue-400 transition">Beranda</a></li>
+          <li><a href="#struktur" class="hover:text-blue-400 transition">Struktur Organisasi</a></li>
+          <li><a href="#anggota" class="hover:text-blue-400 transition">Data Siswa</a></li>
+          <li><a href="#jadwal" class="hover:text-blue-400 transition">Jadwal Sekolah</a></li>
+          <li><a href="#galeri" class="hover:text-blue-400 transition">Galeri Foto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-3 text-sm">Kontak & Lokasi</h4>
+        <p class="leading-relaxed">Kecamatan Sekar, Kabupaten Bojonegoro, Jawa Timur.</p>
+        <p class="mt-2 text-slate-500">Instagram: @ixc.spensakar (Official)</p>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 pt-6 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <span>Dikelola oleh Tim Multimedia & Kreatif Kelas IX.C</span>
+      <span class="text-slate-500">Design enhanced by Zux.Tech</span>
+    </div>
+  </footer>
+
+  <!-- FLOATING AUDIO CONTROLLER -->
+  <div class="fixed bottom-5 left-5 z-40 flex items-center gap-2 bg-slate-900/90 backdrop-blur-md border border-white/10 p-1.5 rounded-full shadow-2xl">
+    <button onclick="toggleAudio()" id="btnAudioToggle" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-500 transition">
+      <i id="audioIcon" class="fa-solid fa-play text-xs"></i>
+    </button>
+    <div class="pr-3 text-left">
+      <div class="text-[11px] font-bold text-white leading-tight">Backsound</div>
+      <div id="audioStatus" class="text-[9px] text-slate-400 font-mono">Ketuk untuk putar</div>
+    </div>
+    <audio id="audioElement" loop preload="none" src="https://files.catbox.moe/gcgzd6.m4a"></audio>
+  </div>
+
+  <!-- FLOATING ADMIN BAR -->
+  <div id="adminDock" class="hidden fixed bottom-5 right-5 z-40 bg-slate-900/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs backdrop-blur-md">
+    <span class="flex items-center gap-1.5 font-bold text-amber-400">
+      <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Admin Mode
+    </span>
+    <div class="h-4 w-px bg-slate-700"></div>
+    <button onclick="exportJSON()" title="Download file backup" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Backup</button>
+    <button onclick="document.getElementById('importFile').click()" title="Pulihkan dari file JSON" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Restore</button>
+    <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
+    <button onclick="exitAdmin()" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 font-semibold rounded-lg text-white transition">Keluar</button>
+  </div>
+
+  <!-- MODAL: LOGIN ADMIN -->
+  <div id="modalAdminLogin" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 rounded-2xl border border-white/10 text-center">
+      <div class="w-12 h-12 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+        <i class="fa-solid fa-shield-halved text-xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1">Akses Mode Admin</h3>
+      <p class="text-xs text-slate-400 mb-4">Masukkan sandi otentikasi pengurus kelas</p>
+      <input type="password" id="inputAdminPassword" placeholder="Sandi default: admin123" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-center mb-4 text-white focus:outline-none focus:border-blue-500">
+      <div class="flex gap-2">
+        <button onclick="toggleModal('modalAdminLogin')" class="flex-1 py-2 text-xs font-semibold text-slate-400 hover:text-white transition">Batal</button>
+        <button onclick="handleAdminLogin()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold text-white transition">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETAIL SISWA -->
+  <div id="modalStudent" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 rounded-2xl border border-white/10 text-center relative">
+      <button onclick="toggleModal('modalStudent')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="relative w-28 h-28 mx-auto mb-4">
+        <img id="modalStuPhoto" src="" class="w-full h-full object-cover rounded-2xl border-2 border-blue-500/30 shadow-lg">
+        <button onclick="triggerUpload('student')" id="btnChangeStuPhoto" class="adm-only hidden absolute inset-0 bg-black/60 rounded-2xl flex flex-col items-center justify-center text-[10px] text-amber-300 font-medium">
+          <i class="fa-solid fa-camera mb-1"></i> Ubah Foto
+        </button>
+      </div>
+
+      <div id="modalStuViewMode">
+        <div id="modalStuAbsen" class="text-xs font-mono font-semibold text-blue-400 mb-1">Absen #01</div>
+        <h3 id="modalStuName" class="text-xl font-bold text-white mb-2">Nama Siswa</h3>
+        <p id="modalStuQuote" class="text-xs italic text-slate-400 mb-4 bg-slate-900/60 p-3 rounded-xl border border-white/5">"Semangat terus pantang mundur"</p>
+        <div class="adm-only hidden">
+          <button onclick="openEditStudentForm()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-xs font-bold rounded-lg text-white"><i class="fa-solid fa-pen mr-1"></i> Edit Data Siswa</button>
+        </div>
+      </div>
+
+      <form id="modalStuEditMode" onsubmit="saveStudentDetail(event)" class="hidden text-left space-y-3 pt-2">
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Nama Lengkap</label>
+          <input type="text" id="editStuName" required class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Jenis Kelamin</label>
+          <select id="editStuGender" class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+            <option value="L">Laki-laki (Putra)</option>
+            <option value="P">Perempuan (Putri)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Kutipan / Motto</label>
+          <input type="text" id="editStuQuote" class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeEditStudentForm()" class="flex-1 py-1.5 text-xs text-slate-400">Batal</button>
+          <button type="submit" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ZOOM IMAGE -->
+  <div id="modalZoom" onclick="this.classList.add('hidden')" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
+    <img id="zoomTargetImg" class="max-w-full max-h-[88vh] rounded-2xl object-contain shadow-2xl">
+  </div>
+
+  <input type="file" id="generalFileInput" accept="image/*" class="hidden">
+
+  <!-- SCRIPT -->
+  <script>
+    const STORAGE_KEY = 'spensakar_ixc_data_v1';
+    let currentAdminToken = false;
+    let selectedStudentIndex = null;
+    let activeUploadContext = null;
+
+    const defaultState = {
+      wali: {
+        name: "Drs. Bambang Sudarsono, M.Pd.",
+        nip: "NIP. 19780512 200501 1 008",
+        quote: "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.",
+        photo: "https://ui-avatars.com/api/?name=Bambang+Sudarsono&background=1e293b&color=60a5fa&size=300"
+      },
+      struktur: {
+        ketua: "Ahmad Fauzan Pratama",
+        wakil: "Nabila Rahmawati",
+        sek1: "Putri Lestari",
+        sek2: "Bagas Dwi Cahyo",
+        ben1: "Siti Nurhaliza",
+        ben2: "Dimas Saputra"
+      },
+      jadwalPelajaran: [
+        { hari: "SENIN", mapel: "Upacara, Matematika, Bahasa Indonesia, Prakarya" },
+        { hari: "SELASA", mapel: "IPA Terpadu, Bahasa Inggris, Seni Budaya" },
+        { hari: "RABU", mapel: "Pendidikan Agama, IPS Terpadu, PJOK" },
+        { hari: "KAMIS", mapel: "Informatika, Bahasa Jawa, PPKn" },
+        { hari: "JUMAT", mapel: "Jumat Bersih/Imtaq, Matematika, BK" },
+        { hari: "SABTU", mapel: "Ekstrakurikuler Wajib Pramuka & Pengembangan Diri" }
+      ],
+      jadwalPiket: [
+        { hari: "SENIN", anggota: "Fauzan, Nabila, Putri, Bagas, Siti" },
+        { hari: "SELASA", anggota: "Dimas, Bayu, Reza, Alifa, Clarissa" },
+        { hari: "RABU", anggota: "Fajar, Galih, Hana, Indah, Jaka" },
+        { hari: "KAMIS", anggota: "Kevin, Luthfi, Maya, Nadia, Oscar" },
+        { hari: "JUMAT", anggota: "Panji, Qori, Rendy, Sinta, Taufik" },
+        { hari: "SABTU", anggota: "Umar, Vina, Wawan, Yoga, Zahra, Budi" }
+      ],
+      students: Array.from({ length: 31 }, (_, i) => {
+        const id = i + 1;
+        const isFemale = [2, 3, 5, 9, 10, 13, 14, 17, 19, 21, 22, 24, 27, 29, 30, 31].includes(id);
+        const nameList = [
+          "Ahmad Fauzan Pratama", "Alifa Nurul Aini", "Anindita Putri", "Bagas Dwi Cahyo",
+          "Clarissa Azzahra", "Dimas Arya Saputra", "Eko Prasetyo", "Fajar Hidayat",
+          "Gisela Amanda", "Hana Pertiwi", "Ilham Maulana", "Jaka Satria",
+          "Khadijah Zahra", "Lestari Rahayu", "Muhammad Ridwan", "Naufal Alamsyah",
+          "Nabila Rahmawati", "Oscar Permana", "Putri Lestari", "Qori Sandrina",
+          "Ratu Bilqis", "Restu Amalia", "Rizky Ramadhan", "Siti Nurhaliza",
+          "Taufik Kurniawan", "Umar Faruq", "Vania Aurelia", "Wahyu Nugroho",
+          "Widya Astuti", "Yolanda Marcela", "Zahra Aulia"
+        ];
+        return {
+          id: id,
+          name: nameList[i] || `Siswa Absen ${id}`,
+          gender: isFemale ? "P" : "L",
+          quote: "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.",
+          photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(nameList[i] || 'Siswa')}&background=0f172a&color=${isFemale ? 'ec4899' : '38bdf8'}&size=200`
+        };
+      }),
+      galeri: [
+        "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop"
+      ]
+    };
+
+    let appState = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState;
+        return { ...defaultState, ...JSON.parse(raw) };
+      } catch (e) {
+        return defaultState;
+      }
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        alert("Penyimpanan lokal penuh. Hapus beberapa foto galeri.");
+      }
+    }
+
+    function renderApp() {
+      renderWali();
+      renderStruktur();
+      renderStats();
+      renderStudents(appState.students);
+      renderJadwal();
+      renderGaleri();
+    }
+
+    function renderWali() {
+      document.getElementById('waliName').innerText = appState.wali.name;
+      document.getElementById('waliNip').innerText = appState.wali.nip;
+      document.getElementById('waliQuote').innerText = `"${appState.wali.quote}"`;
+      document.getElementById('waliPhoto').src = appState.wali.photo;
+    }
+
+    function renderStruktur() {
+      document.getElementById('orgKetua').innerText = appState.struktur.ketua;
+      document.getElementById('orgWakil').innerText = appState.struktur.wakil;
+      document.getElementById('orgSek1').innerText = appState.struktur.sek1;
+      document.getElementById('orgSek2').innerText = appState.struktur.sek2;
+      document.getElementById('orgBen1').innerText = appState.struktur.ben1;
+      document.getElementById('orgBen2').innerText = appState.struktur.ben2;
+    }
+
+    function renderStats() {
+      const total = appState.students.length;
+      const male = appState.students.filter(s => s.gender === 'L').length;
+      const female = total - male;
+
+      document.getElementById('statTotalStudents').innerText = total;
+      document.getElementById('statMaleStudents').innerText = male;
+      document.getElementById('statFemaleStudents').innerText = female;
+    }
+
+    function renderStudents(list) {
+      const container = document.getElementById('stuGridContainer');
+      container.innerHTML = '';
+
+      list.forEach((s) => {
+        const card = document.createElement('div');
+        card.className = "glass-card rounded-2xl p-3 sm:p-4 flex flex-col items-center text-center cursor-pointer transition hover:-translate-y-1 hover:shadow-xl group";
+        card.onclick = () => openStudentModal(s.id);
+
+        card.innerHTML = `
+          <div class="relative w-16 h-16 sm:w-20 sm:h-20 mb-2.5">
+            <img src="${s.photo}" alt="${s.name}" class="w-full h-full rounded-2xl object-cover border border-white/10 group-hover:border-blue-400/60 transition">
+            <span class="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-md text-[9px] font-mono font-bold bg-slate-900 border border-slate-700 text-slate-300">#${String(s.id).padStart(2, '0')}</span>
+          </div>
+          <h4 class="font-bold text-xs sm:text-sm text-slate-100 group-hover:text-blue-400 transition line-clamp-1">${s.name}</h4>
+          <span class="text-[10px] text-slate-500 font-medium">${s.gender === 'L' ? 'Putra' : 'Putri'}</span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderJadwal() {
+      const todayIndex = new Date().getDay();
+      const pelContainer = document.getElementById('pelajaranList');
+      const pikContainer = document.getElementById('piketList');
+
+      pelContainer.innerHTML = '';
+      pikContainer.innerHTML = '';
+
+      appState.jadwalPelajaran.forEach((p, idx) => {
+        const isToday = (todayIndex === idx + 1);
+        const row = document.createElement('div');
+        row.className = `p-3 rounded-xl border text-xs flex justify-between items-center transition ${isToday ? 'today-highlight' : 'bg-slate-900/60 border-white/5'}`;
+        row.innerHTML = `
+          <div class="font-bold tracking-wide ${isToday ? 'text-white' : 'text-slate-400'} w-20">${p.hari}</div>
+          <div class="text-right font-medium text-slate-200 flex-1">${p.mapel}</div>
+        `;
+        pelContainer.appendChild(row);
+      });
+
+      appState.jadwalPiket.forEach((pk, idx) => {
+        const isToday = (todayIndex === idx + 1);
+        const row = document.createElement('div');
+        row.className = `p-3 rounded-xl border text-xs flex justify-between items-center transition ${isToday ? 'today-highlight' : 'bg-slate-900/60 border-white/5'}`;
+        row.innerHTML = `
+          <div class="font-bold tracking-wide ${isToday ? 'text-white' : 'text-slate-400'} w-20">${pk.hari}</div>
+          <div class="text-right text-slate-300 flex-1">${pk.anggota}</div>
+        `;
+        pikContainer.appendChild(row);
+      });
+    }
+
+    function renderGaleri() {
+      const container = document.getElementById('galeriGrid');
+      container.innerHTML = '';
+
+      appState.galeri.forEach((src, idx) => {
+        const box = document.createElement('div');
+        box.className = "relative group overflow-hidden rounded-2xl border border-white/10 aspect-[4/3] bg-slate-900";
+        box.innerHTML = `
+          <img src="${src}" onclick="openZoom('${src}')" class="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition duration-300">
+          <button onclick="deleteGaleri(${idx})" class="adm-only ${currentAdminToken ? 'flex' : 'hidden'} absolute top-2 right-2 bg-rose-600/90 text-white w-7 h-7 rounded-full items-center justify-center shadow-lg hover:bg-rose-500 transition">
+            <i class="fa-solid fa-trash-can text-xs"></i>
+          </button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function filterStudents() {
+      const term = document.getElementById('stuSearchInput').value.toLowerCase().trim();
+      const filtered = appState.students.filter(s => {
+        return s.name.toLowerCase().includes(term) || String(s.id).includes(term);
+      });
+      renderStudents(filtered);
+    }
+
+    function openStudentModal(id) {
+      selectedStudentIndex = appState.students.findIndex(s => s.id === id);
+      if (selectedStudentIndex === -1) return;
+
+      const s = appState.students[selectedStudentIndex];
+      document.getElementById('modalStuAbsen').innerText = `Absen #${String(s.id).padStart(2, '0')}`;
+      document.getElementById('modalStuName').innerText = s.name;
+      document.getElementById('modalStuQuote').innerText = `"${s.quote || '-'}"`;
+      document.getElementById('modalStuPhoto').src = s.photo;
+
+      closeEditStudentForm();
+      toggleModal('modalStudent', true);
+    }
+
+    function openEditStudentForm() {
+      const s = appState.students[selectedStudentIndex];
+      document.getElementById('editStuName').value = s.name;
+      document.getElementById('editStuGender').value = s.gender;
+      document.getElementById('editStuQuote').value = s.quote;
+
+      document.getElementById('modalStuViewMode').classList.add('hidden');
+      document.getElementById('modalStuEditMode').classList.remove('hidden');
+    }
+
+    function closeEditStudentForm() {
+      document.getElementById('modalStuViewMode').classList.remove('hidden');
+      document.getElementById('modalStuEditMode').classList.add('hidden');
+    }
+
+    function saveStudentDetail(e) {
+      e.preventDefault();
+      const s = appState.students[selectedStudentIndex];
+      s.name = document.getElementById('editStuName').value;
+      s.gender = document.getElementById('editStuGender').value;
+      s.quote = document.getElementById('editStuQuote').value;
+
+      persistState();
+      renderStudents(appState.students);
+      renderStats();
+      openStudentModal(s.id);
+    }
+
+    function handleAdminLogin() {
+      const pass = document.getElementById('inputAdminPassword').value;
+      if (pass === 'admin123') {
+        currentAdminToken = true;
+        document.querySelectorAll('.adm-only').forEach(el => el.classList.remove('hidden'));
+        document.getElementById('adminDock').classList.remove('hidden');
+        document.getElementById('navAdminLabel').innerText = 'Admin Aktif';
+        toggleModal('modalAdminLogin', false);
+        renderGaleri();
+      } else {
+        alert('Password keliru.');
+      }
+      document.getElementById('inputAdminPassword').value = '';
+    }
+
+    function exitAdmin() {
+      currentAdminToken = false;
+      document.querySelectorAll('.adm-only').forEach(el => el.classList.add('hidden'));
+      document.getElementById('adminDock').classList.add('hidden');
+      document.getElementById('navAdminLabel').innerText = 'Admin';
+      renderGaleri();
+    }
+
+    function editWaliModal() {
+      const name = prompt("Nama Lengkap Wali Kelas:", appState.wali.name);
+      if (name === null) return;
+      const nip = prompt("NIP Wali Kelas:", appState.wali.nip);
+      const quote = prompt("Kutipan / Motto:", appState.wali.quote);
+
+      if (name) appState.wali.name = name;
+      if (nip) appState.wali.nip = nip;
+      if (quote) appState.wali.quote = quote;
+
+      persistState();
+      renderWali();
+    }
+
+    function editStrukturModal() {
+      const ketua = prompt("Ketua Kelas:", appState.struktur.ketua);
+      if (ketua === null) return;
+      const wakil = prompt("Wakil Ketua:", appState.struktur.wakil);
+      const sek1 = prompt("Sekretaris 1:", appState.struktur.sek1);
+      const ben1 = prompt("Bendahara 1:", appState.struktur.ben1);
+
+      if (ketua) appState.struktur.ketua = ketua;
+      if (wakil) appState.struktur.wakil = wakil;
+      if (sek1) appState.struktur.sek1 = sek1;
+      if (ben1) appState.struktur.ben1 = ben1;
+
+      persistState();
+      renderStruktur();
+    }
+
+    function editJadwalModal(type) {
+      if (type === 'pelajaran') {
+        const raw = prompt("Format edit: Hari|Mata Pelajaran (pisahkan baris baru dengan koma). Contoh:\nSENIN|Matematika, IPA", 
+          appState.jadwalPelajaran.map(j => `${j.hari}|${j.mapel}`).join(';')
+        );
+        if (raw) {
+          appState.jadwalPelajaran = raw.split(';').map(item => {
+            const parts = item.split('|');
+            return { hari: (parts[0] || '').trim(), mapel: (parts[1] || '').trim() };
+          });
+          persistState();
+          renderJadwal();
+        }
+      } else {
+        const raw = prompt("Format edit: Hari|Daftar Nama Piket (pisahkan baris baru dengan titik koma ';')", 
+          appState.jadwalPiket.map(j => `${j.hari}|${j.anggota}`).join(';')
+        );
+        if (raw) {
+          appState.jadwalPiket = raw.split(';').map(item => {
+            const parts = item.split('|');
+            return { hari: (parts[0] || '').trim(), anggota: (parts[1] || '').trim() };
+          });
+          persistState();
+          renderJadwal();
+        }
+      }
+    }
+
+    function triggerUpload(context) {
+      activeUploadContext = context;
+      document.getElementById('generalFileInput').click();
+    }
+
+    document.getElementById('generalFileInput').onchange = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      compressImage(file, 600, 0.75, (base64) => {
+        if (activeUploadContext === 'wali') {
+          appState.wali.photo = base64;
+          renderWali();
+        } else if (activeUploadContext === 'student' && selectedStudentIndex !== null) {
+          appState.students[selectedStudentIndex].photo = base64;
+          document.getElementById('modalStuPhoto').src = base64;
+          renderStudents(appState.students);
+        }
+        persistState();
+      });
+    };
+
+    function uploadFotoGaleri(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      compressImage(file, 800, 0.7, (base64) => {
+        appState.galeri.unshift(base64);
+        persistState();
+        renderGaleri();
+      });
+    }
+
+    function deleteGaleri(idx) {
+      if (confirm('Hapus foto ini dari galeri?')) {
+        appState.galeri.splice(idx, 1);
+        persistState();
+        renderGaleri();
+      }
+    }
+
+    function compressImage(file, maxDimension, quality, callback) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let w = img.width;
+          let h = img.height;
+
+          if (w > h && w > maxDimension) {
+            h = Math.round((h * maxDimension) / w);
+            w = maxDimension;
+          } else if (h > maxDimension) {
+            w = Math.round((w * maxDimension) / h);
+            h = maxDimension;
+          }
+
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup_kelas_ixc_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (parsed.students && parsed.jadwalPelajaran) {
+            appState = parsed;
+            persistState();
+            renderApp();
+            alert('Pemulihan data sukses!');
+          } else {
+            alert('Format file JSON tidak sesuai.');
+          }
+        } catch (err) {
+          alert('Gagal membaca file JSON.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function toggleAudio() {
+      const audio = document.getElementById('audioElement');
+      const icon = document.getElementById('audioIcon');
+      const status = document.getElementById('audioStatus');
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          icon.className = 'fa-solid fa-pause text-xs';
+          status.innerText = 'Memutar Musik';
+        }).catch(() => {
+          status.innerText = 'Izin audio ditolak';
+        });
+      } else {
+        audio.pause();
+        icon.className = 'fa-solid fa-play text-xs';
+        status.innerText = 'Dijeda';
+      }
+    }
+
+    function toggleModal(id, forceOpen = null) {
+      const el = document.getElementById(id);
+      if (forceOpen === true) el.classList.remove('hidden');
+      else if (forceOpen === false) el.classList.add('hidden');
+      else el.classList.toggle('hidden');
+    }
+
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.add('hidden');
+    }
+
+    function openZoom(src) {
+      document.getElementById('zoomTargetImg').src = src;
+      document.getElementById('modalZoom').classList.remove('hidden');
+    }
+
+    async function notifyVisitor() {
+      if (sessionStorage.getItem('visited_ixc_session')) return;
+
+      const payload = {
+        waktu: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) + ' WIB',
+        perangkat: navigator.userAgent
+      };
+
+      try {
+        const res = await fetch('/api/notif', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          sessionStorage.setItem('visited_ixc_session', '1');
+        }
+      } catch (err) {
+        // Silent fail
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderApp();
+      notifyVisitor();
+    });
+  </script>
+</body>
+</html>
