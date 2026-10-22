@@ -159,7 +159,7 @@
     </div>
   </section>
 
-  <!-- STRUKTUR KELAS (LANGSUNG KETIK SAAT MODE ADMIN) -->
+  <!-- STRUKTUR KELAS -->
   <section id="struktur" class="py-12 px-4 max-w-4xl mx-auto">
     <div class="text-center mb-8">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Struktur Organisasi</h2>
@@ -326,12 +326,19 @@
   </div>
 
   <!-- FLOATING ADMIN BAR -->
-  <div id="adminDock" class="hidden fixed bottom-5 right-5 z-40 bg-slate-900/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs backdrop-blur-md">
+  <div id="adminDock" class="hidden fixed bottom-5 right-5 z-40 bg-slate-900/95 border border-amber-500/40 text-white px-3.5 py-2.5 rounded-2xl shadow-2xl flex flex-wrap items-center gap-2 text-xs backdrop-blur-md max-w-[92vw]">
     <span class="flex items-center gap-1.5 font-bold text-amber-400">
-      <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Admin Mode
+      <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+      <span id="syncStatusText">Admin Mode</span>
     </span>
     <div class="h-4 w-px bg-slate-700"></div>
-    <button onclick="exportJSON()" title="Download file backup" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Backup</button>
+    <button onclick="syncToServer(true)" title="Simpan ke Server/Cloud agar dilihat semua orang" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white transition font-semibold">
+      <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Publikasikan
+    </button>
+    <button onclick="exportUpdatedHTML()" title="Download file index.html yang sudah terisi data terbaru" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition font-semibold">
+      <i class="fa-solid fa-code mr-1"></i>Unduh HTML
+    </button>
+    <button onclick="exportJSON()" title="Download file backup JSON" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Backup</button>
     <button onclick="document.getElementById('importFile').click()" title="Pulihkan dari file JSON" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Restore</button>
     <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
     <button onclick="exitAdmin()" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 font-semibold rounded-lg text-white transition">Keluar</button>
@@ -345,7 +352,7 @@
       </div>
       <h3 class="text-lg font-bold text-white mb-1">Akses Mode Admin</h3>
       <p class="text-xs text-slate-400 mb-4">Masukkan sandi otentikasi pengurus kelas</p>
-      <input type="password" id="inputAdminPassword" placeholder="MASUKAN SANDI" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-center mb-4 text-white focus:outline-none focus:border-blue-500">
+      <input type="password" id="inputAdminPassword" placeholder="MASUKKAN SANDI" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-center mb-4 text-white focus:outline-none focus:border-blue-500">
       <div class="flex gap-2">
         <button onclick="toggleModal('modalAdminLogin')" class="flex-1 py-2 text-xs font-semibold text-slate-400 hover:text-white transition">Batal</button>
         <button onclick="handleAdminLogin()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold text-white transition">Masuk</button>
@@ -408,10 +415,20 @@
   <!-- ENGINE JAVASCRIPT -->
   <script>
     const STORAGE_KEY = 'spensakar_ixc_data_v1';
+
+    /**
+     * KONFIGURASI SINKRONISASI PUBLIK (AGAR BISA DILIHAT ORANG LAIN):
+     * - Jika memakai server Node.js/VPS sendiri, biarkan bernilai '/api/data'
+     * - Jika memakai Firebase Realtime Database gratis (tanpa backend), ganti dengan URL Firebase-mu,
+     *   contoh: 'https://ixc-spensakar-default-rtdb.asia-southeast1.firebasedatabase.app/data.json'
+     */
+    const CLOUD_DATA_ENDPOINT = '/api/data';
+
     let currentAdminToken = false;
     let selectedStudentIndex = null;
     let activeUploadContext = null;
 
+    /*__STATE_START__*/
     const defaultState = {
       wali: {
         name: "Drs. Bambang Sudarsono, M.Pd.",
@@ -470,24 +487,96 @@
         "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop"
       ]
     };
+    /*__STATE_END__*/
 
-    let appState = loadState();
+    let appState = loadLocalState();
 
-    function loadState() {
+    function loadLocalState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return defaultState;
-        return { ...defaultState, ...JSON.parse(raw) };
+        if (!raw) return structuredClone(defaultState);
+        return { ...structuredClone(defaultState), ...JSON.parse(raw) };
       } catch (e) {
-        return defaultState;
+        return structuredClone(defaultState);
       }
     }
 
-    function persistState() {
+    // Ambil data terbaru dari Server/Cloud saat pengunjung membuka web
+    async function fetchPublicState() {
+      if (!CLOUD_DATA_ENDPOINT) return;
+      try {
+        const res = await fetch(CLOUD_DATA_ENDPOINT, { cache: 'no-store' });
+        if (!res.ok) return;
+        const remoteData = await res.json();
+        if (remoteData && remoteData.students && remoteData.jadwalPelajaran) {
+          appState = { ...structuredClone(defaultState), ...remoteData };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          renderApp();
+        }
+      } catch (err) {
+        // Jika belum ada server/cloud, otomatis gunakan defaultState / localStorage
+      }
+    }
+
+    // Simpan perubahan ke localStorage & otomatis kirim ke Server/Cloud
+    async function persistState() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       } catch (err) {
-        alert("Penyimpanan lokal penuh. Hapus beberapa foto galeri.");
+        alert("Penyimpanan browser penuh. Kurangi ukuran/jumlah foto galeri.");
+      }
+      await syncToServer(false);
+    }
+
+    async function syncToServer(showAlert = false) {
+      const statusEl = document.getElementById('syncStatusText');
+      if (statusEl) statusEl.innerText = 'Menyimpan...';
+
+      try {
+        const res = await fetch(CLOUD_DATA_ENDPOINT, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(appState)
+        });
+        if (res.ok) {
+          if (statusEl) statusEl.innerText = 'Tersimpan Publik';
+          if (showAlert) alert('Berhasil dipublikasikan! Semua pengunjung sekarang melihat data terbaru.');
+          return;
+        }
+        throw new Error('Server menolak penyimpanan');
+      } catch (err) {
+        if (statusEl) statusEl.innerText = 'Tersimpan Lokal';
+        if (showAlert) {
+          alert('Server database belum terhubung. Gunakan tombol "Unduh HTML" di sebelah kanan untuk mengunduh file index.html yang sudah ter-update permanen!');
+        }
+      }
+    }
+
+    // Solusi Tanpa Database: Generate file index.html baru dengan defaultState yang sudah di-update
+    async function exportUpdatedHTML() {
+      try {
+        let rawHtml = '';
+        try {
+          const res = await fetch(window.location.href, { cache: 'no-store' });
+          if (res.ok) rawHtml = await res.text();
+        } catch (e) {}
+
+        if (!rawHtml || !rawHtml.includes('/*__STATE_START__*/')) {
+          rawHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        }
+
+        const newStateBlock = `/*__STATE_START__*/\n    const defaultState = ${JSON.stringify(appState, null, 2)};\n    /*__STATE_END__*/`;
+        const updatedHtml = rawHtml.replace(/\/\*__STATE_START__\*\/[\s\S]*?\/\*__STATE_END__\*\//, newStateBlock);
+
+        const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'index.html';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert('Gagal membuat file HTML: ' + err.message);
       }
     }
 
@@ -507,7 +596,6 @@
       document.getElementById('waliPhoto').src = appState.wali.photo;
     }
 
-    // STRUKTUR ORGANISASI: SET TEKS & ATRIBUT CONTENTEDITABLE
     function renderStruktur() {
       const keys = ['ketua', 'wakil', 'sek1', 'sek2', 'ben1', 'ben2'];
       const mapId = {
@@ -530,6 +618,7 @@
     }
 
     function updateStrukturField(field, newText) {
+      if (!currentAdminToken) return;
       appState.struktur[field] = newText.trim();
       persistState();
     }
@@ -565,7 +654,6 @@
       });
     }
 
-    // JADWAL DENGAN INLINE EDITING (KLIK LANGSUNG KETIK SAAT ADMIN AKTIF)
     function renderJadwal() {
       const todayIndex = new Date().getDay();
       const pelContainer = document.getElementById('pelajaranList');
@@ -574,7 +662,6 @@
       pelContainer.innerHTML = '';
       pikContainer.innerHTML = '';
 
-      // Pelajaran
       appState.jadwalPelajaran.forEach((p, idx) => {
         const isToday = (todayIndex === idx + 1);
         const row = document.createElement('div');
@@ -589,7 +676,6 @@
         pelContainer.appendChild(row);
       });
 
-      // Piket
       appState.jadwalPiket.forEach((pk, idx) => {
         const isToday = (todayIndex === idx + 1);
         const row = document.createElement('div');
@@ -606,11 +692,13 @@
     }
 
     function updatePelajaranText(index, newText) {
+      if (!currentAdminToken) return;
       appState.jadwalPelajaran[index].mapel = newText.trim();
       persistState();
     }
 
     function updatePiketText(index, newText) {
+      if (!currentAdminToken) return;
       appState.jadwalPiket[index].anggota = newText.trim();
       persistState();
     }
@@ -885,6 +973,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderApp();
+      fetchPublicState();
       notifyVisitor();
     });
   </script>
