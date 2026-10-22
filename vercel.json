@@ -1,5 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/api/notif", "destination": "/api/notif.js" }
-  ]
+  "cleanUrls": true
 }
