@@ -1,0 +1,1079 @@
+<!-- language: HTML, file: index.html, target: Standalone Production Web -->
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KELAS IX.C — SMPN 1 SEKAR</title>
+  <meta name="google-site-verification" content="fJ6vXykYANwYGecPJ0HcVpHA43-2_1frO6wKLhONZyc">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at 15% 10%, rgba(37,99,235,0.22) 0, transparent 42%),
+                  radial-gradient(circle at 85% 55%, rgba(14,165,233,0.14) 0, transparent 42%),
+                  radial-gradient(circle at 50% 95%, rgba(99,102,241,0.12) 0, transparent 45%),
+                  #060911;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 12px 32px -10px rgba(14, 165, 233, 0.18);
+    }
+    .today-highlight {
+      background: linear-gradient(135deg, rgba(37,99,235,0.32) 0%, rgba(14,165,233,0.16) 100%) !important;
+      border: 1px solid #38bdf8 !important;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+    /* Mode Admin: Efek kotak yang bisa langsung diketik */
+    body.admin-mode [contenteditable="true"] {
+      outline: 1.5px dashed #60a5fa !important;
+      background: rgba(37, 99, 235, 0.18) !important;
+      border-radius: 6px;
+      padding: 2px 6px;
+      cursor: text;
+    }
+    /* Animasi Piringan Musik & Equalizer */
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .vinyl-spin {
+      animation: spinSlow 6s linear infinite;
+    }
+    @keyframes eqBar {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+    .eq-bar {
+      width: 2.5px;
+      background: #38bdf8;
+      border-radius: 2px;
+      height: 4px;
+    }
+    .playing .eq-bar:nth-child(1) { animation: eqBar 0.6s ease-in-out infinite 0.1s; }
+    .playing .eq-bar:nth-child(2) { animation: eqBar 0.5s ease-in-out infinite 0.3s; }
+    .playing .eq-bar:nth-child(3) { animation: eqBar 0.7s ease-in-out infinite 0.2s; }
+
+    /* Marquee Ticker Khas IX.C */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #060911; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-blue-600 selection:text-white relative">
+
+  <!-- CANVAS PARTIKEL BINTANG KHAS IX.C -->
+  <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-50"></canvas>
+
+  <!-- TOP NAVBAR -->
+  <header class="fixed top-0 w-full z-40 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+      <a href="#beranda" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center font-display font-black text-white shadow-lg shadow-blue-500/30 group-hover:scale-105 transition">
+          9C
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display font-extrabold tracking-tight text-base leading-none text-white">IX.C <span class="text-cyan-400">SEKAR</span></span>
+          <span class="text-[10px] text-slate-400 font-medium tracking-wider uppercase mt-0.5">SMPN 1 Sekar • Bojonegoro</span>
+        </div>
+      </a>
+
+      <!-- Live Clock Pill (Desktop) -->
+      <div class="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-white/10 text-xs">
+        <span id="schoolStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="liveClockWIB" class="font-mono font-bold text-white">00:00:00 WIB</span>
+        <span class="text-slate-600">|</span>
+        <span id="schoolStatusText" class="text-slate-300 font-medium text-[11px]">Memuat status...</span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#beranda" class="hover:text-cyan-400 transition">Beranda</a>
+        <a href="#struktur" class="hover:text-cyan-400 transition">Struktur</a>
+        <a href="#anggota" class="hover:text-cyan-400 transition">Anggota</a>
+        <a href="#jadwal" class="hover:text-cyan-400 transition">Jadwal</a>
+        <a href="#galeri" class="hover:text-cyan-400 transition">Galeri</a>
+        <button onclick="toggleModal('modalAdminLogin')" class="px-3.5 py-1.5 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white transition flex items-center gap-1.5 text-xs font-semibold">
+          <i class="fa-solid fa-lock text-[10px]"></i> <span id="navAdminLabel">Admin</span>
+        </button>
+      </nav>
+
+      <button onclick="document.getElementById('mobileNav').classList.toggle('hidden')" class="md:hidden text-slate-300 p-2 text-lg">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobileNav" class="hidden md:hidden px-4 py-3 bg-slate-950/95 border-b border-white/10 space-y-2 text-sm">
+      <a href="#beranda" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Beranda</a>
+      <a href="#struktur" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Struktur</a>
+      <a href="#anggota" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Anggota</a>
+      <a href="#jadwal" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Jadwal</a>
+      <a href="#galeri" onclick="toggleMobileNav()" class="block py-1.5 text-slate-300">Galeri</a>
+      <button onclick="toggleMobileNav(); toggleModal('modalAdminLogin')" class="w-full text-left py-2 text-blue-400 font-semibold border-t border-slate-800">Login Admin</button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="beranda" class="relative z-10 pt-28 pb-14 px-4 max-w-5xl mx-auto text-center flex flex-col items-center">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-6 shadow-lg shadow-cyan-950/50">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Tahun Ajaran 2026/2027 • SMPN 1 Sekar
+    </div>
+
+    <h1 class="font-display text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white mb-5 leading-[1.1]">
+      Generasi Emas <br>
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400">Kelas IX.C Spensakar</span>
+    </h1>
+
+    <p class="max-w-2xl text-slate-400 text-sm sm:text-base leading-relaxed mb-8">
+      Wadah kebersamaan, kreativitas, dan inovasi siswa-siswi <strong class="text-slate-200">SMPN 1 Sekar</strong>. Berkomitmen menorehkan prestasi terbaik dan mengukir kenangan abadi.
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="#anggota" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-sm transition shadow-lg shadow-blue-600/30 flex items-center gap-2">
+        <i class="fa-solid fa-users"></i> Daftar Siswa
+      </a>
+      <a href="#jadwal" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold text-sm transition flex items-center gap-2">
+        <i class="fa-solid fa-calendar-days text-cyan-400"></i> Lihat Jadwal
+      </a>
+      <a href="#galeri" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold text-sm transition flex items-center gap-2">
+        <i class="fa-solid fa-images text-blue-400"></i> Album Kenangan
+      </a>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-3xl mt-12 text-left">
+      <div class="glass-card p-4 rounded-2xl relative overflow-hidden">
+        <i class="fa-solid fa-user-graduate absolute -right-2 -bottom-2 text-4xl text-white/5"></i>
+        <div class="text-2xl sm:text-3xl font-display font-black text-white" id="statTotalStudents">31</div>
+        <div class="text-xs text-slate-400 font-medium mt-0.5">Total Anggota</div>
+      </div>
+      <div class="glass-card p-4 rounded-2xl relative overflow-hidden">
+        <i class="fa-solid fa-mars absolute -right-2 -bottom-2 text-4xl text-blue-500/10"></i>
+        <div class="text-2xl sm:text-3xl font-display font-black text-blue-400" id="statMaleStudents">15</div>
+        <div class="text-xs text-slate-400 font-medium mt-0.5">Siswa Putra</div>
+      </div>
+      <div class="glass-card p-4 rounded-2xl relative overflow-hidden">
+        <i class="fa-solid fa-venus absolute -right-2 -bottom-2 text-4xl text-pink-500/10"></i>
+        <div class="text-2xl sm:text-3xl font-display font-black text-pink-400" id="statFemaleStudents">16</div>
+        <div class="text-xs text-slate-400 font-medium mt-0.5">Siswa Putri</div>
+      </div>
+      <div class="glass-card p-4 rounded-2xl relative overflow-hidden">
+        <i class="fa-solid fa-fire-flame-curved absolute -right-2 -bottom-2 text-4xl text-amber-500/10"></i>
+        <div class="text-2xl sm:text-3xl font-display font-black text-amber-400">100%</div>
+        <div class="text-xs text-slate-400 font-medium mt-0.5">Kekompakan</div>
+      </div>
+    </div>
+
+    <!-- KAPSUL WAKTU / COUNTDOWN KELULUSAN IX.C -->
+    <div class="w-full max-w-3xl mt-4 glass-card rounded-2xl p-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-cyan-500/20">
+      <div class="flex items-center gap-3 text-left">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+          <i class="fa-solid fa-hourglass-half"></i>
+        </div>
+        <div>
+          <div class="text-xs font-bold uppercase tracking-wider text-cyan-400">Kapsul Waktu Angkatan IX.C</div>
+          <div class="text-xs text-slate-400">Menuju Momen Pelepasan & Kelulusan Kelas IX</div>
+        </div>
+      </div>
+      <div id="gradCountdown" class="flex items-center gap-2 font-mono text-xs sm:text-sm">
+        <div class="bg-slate-950/90 border border-white/10 px-2.5 py-1.5 rounded-lg text-center min-w-[52px]">
+          <span id="cdDays" class="font-bold text-white block text-sm">00</span>
+          <span class="text-[9px] text-slate-400 uppercase">Hari</span>
+        </div>
+        <div class="bg-slate-950/90 border border-white/10 px-2.5 py-1.5 rounded-lg text-center min-w-[52px]">
+          <span id="cdHours" class="font-bold text-white block text-sm">00</span>
+          <span class="text-[9px] text-slate-400 uppercase">Jam</span>
+        </div>
+        <div class="bg-slate-950/90 border border-white/10 px-2.5 py-1.5 rounded-lg text-center min-w-[52px]">
+          <span id="cdMins" class="font-bold text-cyan-400 block text-sm">00</span>
+          <span class="text-[9px] text-slate-400 uppercase">Menit</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUNNING TICKER KHAS IX.C -->
+  <div class="relative z-10 border-y border-white/5 bg-slate-950/60 py-2.5 overflow-hidden">
+    <div class="animate-marquee flex items-center gap-8 text-xs font-semibold text-slate-400 uppercase tracking-widest">
+      <span><i class="fa-solid fa-bolt text-amber-400 mr-1.5"></i> Kelas IX.C SMPN 1 Sekar</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-star text-cyan-400 mr-1.5"></i> Kompak • Santun • Berprestasi</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-location-dot text-blue-400 mr-1.5"></i> Kec. Sekar, Kab. Bojonegoro</span>
+      <span>•</span>
+      <span><i class="fa-brands fa-tiktok text-pink-400 mr-1.5"></i> Official TikTok: @www.user151704</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-bolt text-amber-400 mr-1.5"></i> Kelas IX.C SMPN 1 Sekar</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-star text-cyan-400 mr-1.5"></i> Kompak • Santun • Berprestasi</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-location-dot text-blue-400 mr-1.5"></i> Kec. Sekar, Kab. Bojonegoro</span>
+      <span>•</span>
+      <span><i class="fa-brands fa-tiktok text-pink-400 mr-1.5"></i> Official TikTok: @www.user151704</span>
+    </div>
+  </div>
+
+  <!-- WALI KELAS -->
+  <section class="relative z-10 py-12 px-4 max-w-4xl mx-auto">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden">
+      <div class="relative group shrink-0">
+        <img id="waliPhoto" src="https://ui-avatars.com/api/?name=Wali+Kelas&background=1e293b&color=60a5fa&size=400" alt="Wali Kelas" class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover border-2 border-blue-500/30 shadow-xl">
+        <button onclick="triggerUpload('wali')" class="adm-only hidden absolute inset-0 bg-black/60 rounded-2xl flex flex-col items-center justify-center text-xs font-semibold text-amber-300 opacity-90 transition">
+          <i class="fa-solid fa-camera mb-1 text-base"></i> Ganti Foto
+        </button>
+      </div>
+
+      <div class="space-y-2 text-center sm:text-left flex-1">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded-md border border-blue-500/20">Wali Kelas IX.C</span>
+        <h3 id="waliName" class="text-2xl font-display font-bold text-white tracking-tight">Widiasari</h3>
+        <p id="waliNip" class="text-xs text-slate-400 font-mono">NIP. -</p>
+        <p id="waliQuote" class="text-sm italic text-slate-300 pt-2 border-t border-white/5">"Pendidikan adalah senjata paling ampuh untuk mengubah dunia."</p>
+        <div class="adm-only hidden pt-2">
+          <button onclick="editWaliModal()" class="text-xs bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg font-semibold text-white transition"><i class="fa-solid fa-pen-to-square mr-1"></i>Edit Data Wali Kelas</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRUKTUR KELAS -->
+  <section id="struktur" class="relative z-10 py-12 px-4 max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Struktur Organisasi</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Pengurus inti kelas. </p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="glass-card rounded-xl p-4 border-l-4 border-l-blue-500 relative">
+          <span class="text-[10px] font-bold tracking-widest text-blue-400 uppercase"><i class="fa-solid fa-crown mr-1"></i>Ketua Kelas</span>
+          <div class="text-base font-bold text-white mt-1 outline-none" id="orgKetua" onblur="updateStrukturField('ketua', this.innerText)">Egie</div>
+          <p class="text-xs text-slate-400">Koordinator Utama</p>
+        </div>
+        <div class="glass-card rounded-xl p-4 border-l-4 border-l-cyan-500 relative">
+          <span class="text-[10px] font-bold tracking-widest text-cyan-400 uppercase"><i class="fa-solid fa-star mr-1"></i>Wakil Ketua</span>
+          <div class="text-base font-bold text-white mt-1 outline-none" id="orgWakil" onblur="updateStrukturField('wakil', this.innerText)">Syifa</div>
+          <p class="text-xs text-slate-400">Pendamping Koordinator</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 1</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" id="orgSek1" onblur="updateStrukturField('sek1', this.innerText)">-</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-emerald-500">
+          <span class="text-[10px] font-bold text-emerald-400 uppercase">Sekretaris 2</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" id="orgSek2" onblur="updateStrukturField('sek2', this.innerText)">-</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
+          <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 1</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" id="orgBen1" onblur="updateStrukturField('ben1', this.innerText)">Valen</div>
+        </div>
+        <div class="glass-card rounded-xl p-3 border-t-2 border-t-amber-500">
+          <span class="text-[10px] font-bold text-amber-400 uppercase">Bendahara 2</span>
+          <div class="text-xs sm:text-sm font-bold text-white mt-0.5 outline-none" id="orgBen2" onblur="updateStrukturField('ben2', this.innerText)">Monic</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANGGOTA SISWA -->
+  <section id="anggota" class="relative z-10 py-12 px-4 max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Daftar Anggota</h2>
+        <p class="text-xs sm:text-sm text-slate-400">Klik kartu siswa untuk melihat profil lengkap</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+        <!-- Filter Putra/Putri -->
+        <div class="flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+          <button onclick="setGenderFilter('ALL')" id="tabFilterALL" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white transition">Semua</button>
+          <button onclick="setGenderFilter('L')" id="tabFilterL" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Putra</button>
+          <button onclick="setGenderFilter('P')" id="tabFilterP" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">Putri</button>
+        </div>
+
+        <!-- Pencarian -->
+        <div class="relative flex-1 sm:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="stuSearchInput" onkeyup="filterStudents()" placeholder="Cari nama atau absen..." class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-blue-500 text-white placeholder-slate-500">
+        </div>
+      </div>
+    </div>
+
+    <div id="stuGridContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4"></div>
+  </section>
+
+  <!-- JADWAL (PELAJARAN & PIKET) -->
+  <section id="jadwal" class="relative z-10 py-12 px-4 max-w-6xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Agenda & Jadwal Mingguan</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-1">Hari aktif saat ini ditandai otomatis. (Mode Admin: Klik langsung teksnya untuk mengedit)</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Jadwal Pelajaran -->
+      <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark text-blue-400"></i> Jadwal Pelajaran
+            </h3>
+            <span class="text-[11px] text-slate-400">Senin - Sabtu</span>
+          </div>
+          <div id="pelajaranList" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Jadwal Piket -->
+      <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-broom text-cyan-400"></i> Jadwal Piket Kebersihan
+            </h3>
+            <span class="text-[11px] text-slate-400">Rotasi Harian</span>
+          </div>
+          <div id="piketList" class="space-y-2"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section id="galeri" class="relative z-10 py-12 px-4 max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Album Kenangan</h2>
+        <p class="text-xs sm:text-sm text-slate-400">Dokumentasi momen berharga kelas IX.C (Kualitas Full HD)</p>
+      </div>
+      <button onclick="document.getElementById('inputGaleri').click()" class="adm-only hidden px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30">
+        <i class="fa-solid fa-plus"></i> Upload Foto HD
+      </button>
+      <input type="file" id="inputGaleri" accept="image/*" class="hidden" onchange="uploadFotoGaleri(event)">
+    </div>
+
+    <div id="galeriGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="kontak" class="relative z-10 mt-20 border-t border-slate-900 bg-slate-950/80 py-12 px-4 text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-xs">9C</div>
+          <span class="font-bold text-white text-sm">SMP NEGERI 1 SEKAR</span>
+        </div>
+        <p class="text-slate-400 leading-relaxed">Website kenangan dan pusat informasi kegiatan kelas IX.C. Kompak, santun, berprestasi.</p>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-3 text-sm">Tautan Cepat</h4>
+        <ul class="space-y-1.5">
+          <li><a href="#beranda" class="hover:text-blue-400 transition">Beranda</a></li>
+          <li><a href="#struktur" class="hover:text-blue-400 transition">Struktur Organisasi</a></li>
+          <li><a href="#anggota" class="hover:text-blue-400 transition">Data Siswa</a></li>
+          <li><a href="#jadwal" class="hover:text-blue-400 transition">Jadwal Sekolah</a></li>
+          <li><a href="#galeri" class="hover:text-blue-400 transition">Galeri Foto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-3 text-sm">Kontak & Lokasi</h4>
+        <p class="leading-relaxed">Kecamatan Sekar, Kabupaten Bojonegoro, Jawa Timur.</p>
+        <p class="mt-2 text-slate-500">Tiktok: @www.user151704 (Official)</p>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 pt-6 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <span>Dikelola oleh Tim Multimedia & Kreatif Kelas IX.C</span>
+      <span class="text-slate-500">Design enhanced by Zux.Tech</span>
+    </div>
+  </footer>
+
+  <!-- FLOATING AUDIO CONTROLLER (VINYL EDITION) -->
+  <div id="audioDock" class="fixed bottom-5 left-5 z-40 flex items-center gap-2.5 bg-slate-900/95 backdrop-blur-md border border-white/10 p-1.5 pr-4 rounded-full shadow-2xl">
+    <button onclick="toggleAudio()" id="btnAudioToggle" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg hover:scale-105 transition relative">
+      <i id="audioIcon" class="fa-solid fa-compact-disc text-sm"></i>
+    </button>
+    <div class="text-left">
+      <div class="flex items-center gap-2">
+        <span class="text-[11px] font-bold text-white leading-tight">Backsound IX.C</span>
+        <div class="flex items-end gap-0.5 h-3">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+      </div>
+      <div id="audioStatus" class="text-[9px] text-slate-400 font-mono">Ketuk untuk putar</div>
+    </div>
+    <audio id="audioElement" loop preload="none" src="https://files.catbox.moe/gcgzd6.m4a"></audio>
+  </div>
+
+  <!-- FLOATING ADMIN BAR -->
+  <div id="adminDock" class="hidden fixed bottom-5 right-5 z-40 bg-slate-900/95 border border-amber-500/40 text-white px-3.5 py-2.5 rounded-2xl shadow-2xl flex flex-wrap items-center gap-2 text-xs backdrop-blur-md max-w-[92vw]">
+    <span class="flex items-center gap-1.5 font-bold text-amber-400">
+      <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+      <span id="syncStatusText">Admin Mode</span>
+    </span>
+    <div class="h-4 w-px bg-slate-700"></div>
+    <button onclick="syncToServer(true)" title="Simpan ke Server/GitHub agar dilihat semua orang" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white transition font-semibold">
+      <i class="fa-solid fa-cloud-arrow-up mr-1"></i>Publikasikan
+    </button>
+    <button onclick="exportUpdatedHTML()" title="Download file index.html yang sudah berisi hasil editan terbaru" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-white transition font-semibold">
+      <i class="fa-solid fa-code mr-1"></i>Unduh HTML
+    </button>
+    <button onclick="exportJSON()" title="Download file backup JSON" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Backup</button>
+    <button onclick="document.getElementById('importFile').click()" title="Pulihkan dari file JSON" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition font-medium">Restore</button>
+    <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
+    <button onclick="exitAdmin()" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 font-semibold rounded-lg text-white transition">Keluar</button>
+  </div>
+
+  <!-- MODAL: LOGIN ADMIN -->
+  <div id="modalAdminLogin" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card max-w-sm w-full p-6 rounded-2xl border border-white/10 text-center">
+      <div class="w-12 h-12 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+        <i class="fa-solid fa-shield-halved text-xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-white mb-1">Akses Mode Admin</h3>
+      <p class="text-xs text-slate-400 mb-4">Masukkan sandi otentikasi pengurus kelas</p>
+      <input type="password" id="inputAdminPassword" placeholder="MASUKKAN SANDI" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-center mb-4 text-white focus:outline-none focus:border-blue-500">
+      <div class="flex gap-2">
+        <button onclick="toggleModal('modalAdminLogin')" class="flex-1 py-2 text-xs font-semibold text-slate-400 hover:text-white transition">Batal</button>
+        <button onclick="handleAdminLogin()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold text-white transition">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETAIL SISWA -->
+  <div id="modalStudent" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 rounded-2xl border border-white/10 text-center relative">
+      <button onclick="toggleModal('modalStudent')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="relative w-28 h-28 mx-auto mb-4">
+        <img id="modalStuPhoto" src="" class="w-full h-full object-cover rounded-2xl border-2 border-blue-500/30 shadow-lg">
+        <button onclick="triggerUpload('student')" id="btnChangeStuPhoto" class="adm-only hidden absolute inset-0 bg-black/60 rounded-2xl flex flex-col items-center justify-center text-[10px] text-amber-300 font-medium">
+          <i class="fa-solid fa-camera mb-1"></i> Ubah Foto
+        </button>
+      </div>
+
+      <div id="modalStuViewMode">
+        <div id="modalStuAbsen" class="text-xs font-mono font-semibold text-blue-400 mb-1">Absen #01</div>
+        <h3 id="modalStuName" class="text-xl font-bold text-white mb-2">Nama Siswa</h3>
+        <p id="modalStuQuote" class="text-xs italic text-slate-400 mb-4 bg-slate-900/60 p-3 rounded-xl border border-white/5">"Semangat terus pantang mundur"</p>
+        <div class="adm-only hidden">
+          <button onclick="openEditStudentForm()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-xs font-bold rounded-lg text-white"><i class="fa-solid fa-pen mr-1"></i> Edit Data Siswa</button>
+        </div>
+      </div>
+
+      <form id="modalStuEditMode" onsubmit="saveStudentDetail(event)" class="hidden text-left space-y-3 pt-2">
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Nama Lengkap</label>
+          <input type="text" id="editStuName" required class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Jenis Kelamin</label>
+          <select id="editStuGender" class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+            <option value="L">Laki-laki (Putra)</option>
+            <option value="P">Perempuan (Putri)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] uppercase font-bold text-slate-400">Kutipan / Motto</label>
+          <input type="text" id="editStuQuote" class="w-full px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white">
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeEditStudentForm()" class="flex-1 py-1.5 text-xs text-slate-400">Batal</button>
+          <button type="submit" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ZOOM IMAGE -->
+  <div id="modalZoom" onclick="this.classList.add('hidden')" class="hidden fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4">
+    <img id="zoomTargetImg" class="max-w-full max-h-[88vh] rounded-2xl object-contain shadow-2xl">
+  </div>
+
+  <input type="file" id="generalFileInput" accept="image/*" class="hidden" onchange="handleGeneralUpload(event)">
+
+  <!-- ENGINE JAVASCRIPT -->
+  <script>
+    const STORAGE_KEY = 'spensakar_ixc_data_v1';
+    const CLOUD_DATA_ENDPOINT = '/api/data';
+    const ADMIN_PIN = 'ixcsekar';
+
+    let currentAdminToken = false;
+    let selectedStudentIndex = null;
+    let activeUploadContext = null;
+    let currentGenderFilter = 'ALL';
+
+    /*__STATE_START__*/
+    const defaultState = {
+      "wali": {
+        "name": "Widiasari",
+        "nip": "-",
+        "quote": "Pendidikan adalah senjata paling ampuh untuk mengubah dunia.",
+        "photo": "https://ui-avatars.com/api/?name=Widiasari&background=1e293b&color=60a5fa&size=400"
+      },
+      "struktur": {
+        "ketua": "Egie",
+        "wakil": "Syifa",
+        "sek1": "-",
+        "sek2": "-",
+        "ben1": "Valen",
+        "ben2": "Monic"
+      },
+      "jadwalPelajaran": [
+        { "hari": "SENIN", "mapel": "kpn kpn mls" },
+        { "hari": "SELASA", "mapel": "kpn kpn mls" },
+        { "hari": "RABU", "mapel": "kpn kpn mls" },
+        { "hari": "KAMIS", "mapel": "kpn kpn mls" },
+        { "hari": "JUMAT", "mapel": "kpn kpn mls" },
+        { "hari": "SABTU", "mapel": "kpn kpn mls" }
+      ],
+      "jadwalPiket": [
+        { "hari": "SENIN", "anggota": "kpn kpn mls" },
+        { "hari": "SELASA", "anggota": "kpn kpn mls" },
+        { "hari": "RABU", "anggota": "kpn kpn mls" },
+        { "hari": "KAMIS", "anggota": "kpn kpn mls" },
+        { "hari": "JUMAT", "anggota": "kpn kpn mls" },
+        { "hari": "SABTU", "anggota": "kpn kpn mls" }
+      ],
+      "students": [
+        { "id": 1, "name": "Achmad Egie Prasetyo ", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Ahmad%20Fauzan%20Pratama&background=0f172a&color=38bdf8&size=200" },
+        { "id": 2, "name": "Ahmad Saifudin Zuhri ", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Ahmad%20Saifudin%20Zuhri&background=0f172a&color=38bdf8&size=200" },
+        { "id": 3, "name": "Aisyah Putri Andin", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Anindita%20Putri&background=0f172a&color=ec4899&size=200" },
+        { "id": 4, "name": "Siswa 4", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Bagas%20Dwi%20Cahyo&background=0f172a&color=38bdf8&size=200" },
+        { "id": 5, "name": "Siswa 5", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Clarissa%20Azzahra&background=0f172a&color=ec4899&size=200" },
+        { "id": 6, "name": "Siswa 6", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Dimas%20Arya%20Saputra&background=0f172a&color=38bdf8&size=200" },
+        { "id": 7, "name": "Davit Faristian Ganteng", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Eko%20Prasetyo&background=0f172a&color=38bdf8&size=200" },
+        { "id": 8, "name": "Siswa 8", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Fajar%20Hidayat&background=0f172a&color=38bdf8&size=200" },
+        { "id": 9, "name": "Siswa 9", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Gisela%20Amanda&background=0f172a&color=ec4899&size=200" },
+        { "id": 10, "name": "Siswa 10", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Hana%20Pertiwi&background=0f172a&color=ec4899&size=200" },
+        { "id": 11, "name": "Siswa 11", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Ilham%20Maulana&background=0f172a&color=38bdf8&size=200" },
+        { "id": 12, "name": "Siswa 12", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Jaka%20Satria&background=0f172a&color=38bdf8&size=200" },
+        { "id": 13, "name": "Siswa 13", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Khadijah%20Zahra&background=0f172a&color=ec4899&size=200" },
+        { "id": 14, "name": "Siswa 14", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Lestari%20Rahayu&background=0f172a&color=ec4899&size=200" },
+        { "id": 15, "name": "Siswa 15", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Muhammad%20Ridwan&background=0f172a&color=38bdf8&size=200" },
+        { "id": 16, "name": "Siswa 16", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Naufal%20Alamsyah&background=0f172a&color=38bdf8&size=200" },
+        { "id": 17, "name": "Siswa 17", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Nabila%20Rahmawati&background=0f172a&color=ec4899&size=200" },
+        { "id": 18, "name": "Siswa 18", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Oscar%20Permana&background=0f172a&color=38bdf8&size=200" },
+        { "id": 19, "name": "Siswa 19", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Putri%20Lestari&background=0f172a&color=ec4899&size=200" },
+        { "id": 20, "name": "Siswa 20", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Qori%20Sandrina&background=0f172a&color=38bdf8&size=200" },
+        { "id": 21, "name": "Siswa 21", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Ratu%20Bilqis&background=0f172a&color=ec4899&size=200" },
+        { "id": 22, "name": "Siswa 22", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Restu%20Amalia&background=0f172a&color=ec4899&size=200" },
+        { "id": 23, "name": "Siswa 23", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Rizky%20Ramadhan&background=0f172a&color=38bdf8&size=200" },
+        { "id": 24, "name": "Siswa 24", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Siti%20Nurhaliza&background=0f172a&color=ec4899&size=200" },
+        { "id": 25, "name": "Siswa 25", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Taufik%20Kurniawan&background=0f172a&color=38bdf8&size=200" },
+        { "id": 26, "name": "Siswa 26", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Umar%20Faruq&background=0f172a&color=38bdf8&size=200" },
+        { "id": 27, "name": "Siswa 27", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Vania%20Aurelia&background=0f172a&color=ec4899&size=200" },
+        { "id": 28, "name": "Siswa 28", "gender": "L", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Wahyu%20Nugroho&background=0f172a&color=38bdf8&size=200" },
+        { "id": 29, "name": "Siswa 29", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Widya%20Astuti&background=0f172a&color=ec4899&size=200" },
+        { "id": 30, "name": "Siswa 30", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Yolanda%20Marcela&background=0f172a&color=ec4899&size=200" },
+        { "id": 31, "name": "Siswa 31", "gender": "P", "quote": "Berusaha sebaik mungkin, biarkan hasil mengikuti usaha.", "photo": "https://ui-avatars.com/api/?name=Zahra%20Aulia&background=0f172a&color=ec4899&size=200" }
+      ],
+      "galeri": []
+    };
+    /*__STATE_END__*/
+
+    let appState = JSON.parse(JSON.stringify(defaultState));
+
+    async function initApp() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          appState = { ...defaultState, ...parsed };
+        } catch (e) { console.error(e); }
+      }
+      renderAll();
+
+      try {
+        const res = await fetch(CLOUD_DATA_ENDPOINT, { cache: 'no-store' });
+        if (res.ok) {
+          const cloudData = await res.json();
+          if (cloudData && cloudData.students) {
+            appState = { ...defaultState, ...cloudData };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            renderAll();
+          }
+        }
+      } catch (err) {}
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      renderAll();
+    }
+
+    function renderAll() {
+      // Wali Kelas
+      document.getElementById('waliName').innerText = appState.wali.name;
+      document.getElementById('waliNip').innerText = 'NIP. ' + appState.wali.nip;
+      document.getElementById('waliQuote').innerText = `"${appState.wali.quote}"`;
+      document.getElementById('waliPhoto').src = appState.wali.photo;
+
+      // Struktur
+      document.getElementById('orgKetua').innerText = appState.struktur.ketua;
+      document.getElementById('orgWakil').innerText = appState.struktur.wakil;
+      document.getElementById('orgSek1').innerText = appState.struktur.sek1;
+      document.getElementById('orgSek2').innerText = appState.struktur.sek2;
+      document.getElementById('orgBen1').innerText = appState.struktur.ben1;
+      document.getElementById('orgBen2').innerText = appState.struktur.ben2;
+
+      // Statistik Siswa
+      const total = appState.students.length;
+      const male = appState.students.filter(s => s.gender === 'L').length;
+      const female = appState.students.filter(s => s.gender === 'P').length;
+      document.getElementById('statTotalStudents').innerText = total;
+      document.getElementById('statMaleStudents').innerText = male;
+      document.getElementById('statFemaleStudents').innerText = female;
+
+      filterStudents();
+      renderSchedules();
+      renderGaleri();
+      applyAdminUI();
+    }
+
+    function setGenderFilter(g) {
+      currentGenderFilter = g;
+      ['ALL', 'L', 'P'].forEach(k => {
+        const btn = document.getElementById('tabFilter' + k);
+        if (k === g) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-blue-600 text-white transition';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+        }
+      });
+      filterStudents();
+    }
+
+    function filterStudents() {
+      const q = (document.getElementById('stuSearchInput').value || '').toLowerCase();
+      const grid = document.getElementById('stuGridContainer');
+      grid.innerHTML = '';
+
+      appState.students.forEach((stu, idx) => {
+        const absenStr = String(stu.id).padStart(2, '0');
+        const matchQuery = stu.name.toLowerCase().includes(q) || absenStr.includes(q);
+        const matchGender = currentGenderFilter === 'ALL' || stu.gender === currentGenderFilter;
+
+        if (matchQuery && matchGender) {
+          const isMale = stu.gender === 'L';
+          const badgeColor = isMale
+            ? 'text-blue-400 bg-blue-950/80 border-blue-500/30'
+            : 'text-pink-400 bg-pink-950/80 border-pink-500/30';
+
+          const card = document.createElement('div');
+          card.className = 'glass-card rounded-2xl p-3.5 text-center cursor-pointer group hover:-translate-y-1 transition flex flex-col items-center';
+          card.onclick = () => openStudentModal(idx);
+          card.innerHTML = `
+            <div class="relative w-20 h-20 sm:w-24 sm:h-24 mb-3">
+              <img src="${stu.photo}" alt="${stu.name}" class="w-full h-full object-cover rounded-2xl border border-white/10 group-hover:border-cyan-400/50 transition shadow-md">
+              <span class="absolute -top-1.5 -right-1.5 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md border ${badgeColor}">#${absenStr}</span>
+            </div>
+            <h4 class="text-xs sm:text-sm font-bold text-white line-clamp-1 group-hover:text-cyan-300 transition">${stu.name}</h4>
+            <span class="text-[10px] text-slate-400 mt-0.5">${isMale ? 'Putra' : 'Putri'}</span>
+          `;
+          grid.appendChild(card);
+        }
+      });
+    }
+
+    function renderSchedules() {
+      const daysMap = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+      const todayName = daysMap[new Date().getDay()];
+
+      const pelEl = document.getElementById('pelajaranList');
+      pelEl.innerHTML = '';
+      appState.jadwalPelajaran.forEach((item, idx) => {
+        const isToday = item.hari === todayName;
+        pelEl.innerHTML += `
+          <div class="p-3 rounded-xl bg-slate-900/70 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1 ${isToday ? 'today-highlight' : ''}">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-extrabold tracking-wider ${isToday ? 'text-cyan-300' : 'text-blue-400'}">${item.hari}</span>
+              ${isToday ? '<span class="text-[9px] bg-cyan-500 text-slate-950 font-extrabold px-1.5 py-0.5 rounded uppercase">Hari Ini</span>' : ''}
+            </div>
+            <div class="text-xs text-slate-200 outline-none" contenteditable="${currentAdminToken}" onblur="updateSchedule('pelajaran', ${idx}, this.innerText)">${item.mapel}</div>
+          </div>
+        `;
+      });
+
+      const pikEl = document.getElementById('piketList');
+      pikEl.innerHTML = '';
+      appState.jadwalPiket.forEach((item, idx) => {
+        const isToday = item.hari === todayName;
+        pikEl.innerHTML += `
+          <div class="p-3 rounded-xl bg-slate-900/70 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1 ${isToday ? 'today-highlight' : ''}">
+            <span class="text-xs font-extrabold tracking-wider ${isToday ? 'text-cyan-300' : 'text-cyan-400'}">${item.hari}</span>
+            <div class="text-xs text-slate-200 outline-none" contenteditable="${currentAdminToken}" onblur="updateSchedule('piket', ${idx}, this.innerText)">${item.anggota}</div>
+          </div>
+        `;
+      });
+    }
+
+    function renderGaleri() {
+      const grid = document.getElementById('galeriGrid');
+      grid.innerHTML = '';
+      if (!appState.galeri || appState.galeri.length === 0) {
+        grid.innerHTML = `<div class="col-span-full glass-card rounded-2xl p-8 text-center text-slate-400 text-xs">Belum ada foto di album kenangan. Login Admin untuk mengunggah foto HD.</div>`;
+        return;
+      }
+      appState.galeri.forEach((src, idx) => {
+        grid.innerHTML += `
+          <div class="glass-card rounded-2xl p-2 relative group overflow-hidden">
+            <img src="${src}" onclick="zoomImage('${src}')" class="w-full h-56 object-cover rounded-xl cursor-zoom-in group-hover:scale-[1.02] transition duration-300">
+            ${currentAdminToken ? `
+              <button onclick="deleteGaleri(${idx})" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center shadow-lg">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
+            ` : ''}
+          </div>
+        `;
+      });
+    }
+
+    function zoomImage(src) {
+      document.getElementById('zoomTargetImg').src = src;
+      document.getElementById('modalZoom').classList.remove('hidden');
+    }
+
+    // JAM REAL-TIME WIB & COUNTDOWN KELULUSAN
+    function startLiveClockAndCountdown() {
+      const targetGrad = new Date('2025-06-02T08:00:00+07:00').getTime();
+
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false });
+        const clockEl = document.getElementById('liveClockWIB');
+        if (clockEl) clockEl.innerText = timeStr + ' WIB';
+
+        const day = now.getDay();
+        const hour = now.getHours();
+        const statusText = document.getElementById('schoolStatusText');
+        const statusDot = document.getElementById('schoolStatusDot');
+
+        if (day === 0) {
+          statusText.innerText = 'Hari Libur Akhir Pekan';
+          statusDot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        } else if (hour >= 7 && hour < 14) {
+          statusText.innerText = 'Jam Aktif KBM SMPN 1 Sekar';
+          statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
+        } else {
+          statusText.innerText = 'Di Luar Jam Sekolah';
+          statusDot.className = 'w-2 h-2 rounded-full bg-sky-400';
+        }
+
+        const diff = targetGrad - now.getTime();
+        if (diff > 0) {
+          document.getElementById('cdDays').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          document.getElementById('cdHours').innerText = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+          document.getElementById('cdMins').innerText = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+        } else {
+          document.getElementById('gradCountdown').innerHTML = `<span class="text-xs font-bold text-amber-400">🎓 Selamat & Sukses Alumni IX.C!</span>`;
+        }
+      }, 1000);
+    }
+
+    // MODAL & ADMIN HANDLERS
+    function toggleModal(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.add('hidden');
+    }
+
+    function handleAdminLogin() {
+      const val = document.getElementById('inputAdminPassword').value.trim();
+      if (val === ADMIN_PIN || val === 'zuhri123' || val === '9csekar') {
+        currentAdminToken = true;
+        document.getElementById('inputAdminPassword').value = '';
+        toggleModal('modalAdminLogin');
+        renderAll();
+      } else {
+        alert('Sandi Admin tidak sesuai!');
+      }
+    }
+
+    function exitAdmin() {
+      currentAdminToken = false;
+      renderAll();
+    }
+
+    function applyAdminUI() {
+      document.body.classList.toggle('admin-mode', currentAdminToken);
+      document.getElementById('adminDock').classList.toggle('hidden', !currentAdminToken);
+      document.getElementById('navAdminLabel').innerText = currentAdminToken ? 'Mode Edit Aktif' : 'Admin';
+
+      document.querySelectorAll('.adm-only').forEach(el => {
+        el.classList.toggle('hidden', !currentAdminToken);
+      });
+
+      ['orgKetua', 'orgWakil', 'orgSek1', 'orgSek2', 'orgBen1', 'orgBen2'].forEach(id => {
+        document.getElementById(id).setAttribute('contenteditable', currentAdminToken);
+      });
+    }
+
+    function updateStrukturField(key, val) {
+      if (!currentAdminToken) return;
+      appState.struktur[key] = val.trim();
+      saveState();
+    }
+
+    function updateSchedule(type, idx, val) {
+      if (!currentAdminToken) return;
+      if (type === 'pelajaran') appState.jadwalPelajaran[idx].mapel = val.trim();
+      if (type === 'piket') appState.jadwalPiket[idx].anggota = val.trim();
+      saveState();
+    }
+
+    function editWaliModal() {
+      const name = prompt('Nama Wali Kelas:', appState.wali.name);
+      if (name === null) return;
+      const nip = prompt('NIP Wali Kelas:', appState.wali.nip);
+      const quote = prompt('Motto / Kutipan Wali Kelas:', appState.wali.quote);
+      appState.wali.name = name || appState.wali.name;
+      appState.wali.nip = nip !== null ? nip : appState.wali.nip;
+      appState.wali.quote = quote || appState.wali.quote;
+      saveState();
+    }
+
+    function openStudentModal(idx) {
+      selectedStudentIndex = idx;
+      const stu = appState.students[idx];
+      document.getElementById('modalStuPhoto').src = stu.photo;
+      document.getElementById('modalStuAbsen').innerText = `Absen #${String(stu.id).padStart(2, '0')} • ${stu.gender === 'L' ? 'Putra' : 'Putri'}`;
+      document.getElementById('modalStuName').innerText = stu.name;
+      document.getElementById('modalStuQuote').innerText = `"${stu.quote}"`;
+      closeEditStudentForm();
+      toggleModal('modalStudent');
+    }
+
+    function openEditStudentForm() {
+      const stu = appState.students[selectedStudentIndex];
+      document.getElementById('editStuName').value = stu.name;
+      document.getElementById('editStuGender').value = stu.gender;
+      document.getElementById('editStuQuote').value = stu.quote;
+      document.getElementById('modalStuViewMode').classList.add('hidden');
+      document.getElementById('modalStuEditMode').classList.remove('hidden');
+    }
+
+    function closeEditStudentForm() {
+      document.getElementById('modalStuViewMode').classList.remove('hidden');
+      document.getElementById('modalStuEditMode').classList.add('hidden');
+    }
+
+    function saveStudentDetail(e) {
+      e.preventDefault();
+      const stu = appState.students[selectedStudentIndex];
+      stu.name = document.getElementById('editStuName').value.trim();
+      stu.gender = document.getElementById('editStuGender').value;
+      stu.quote = document.getElementById('editStuQuote').value.trim();
+      saveState();
+      openStudentModal(selectedStudentIndex);
+      toggleModal('modalStudent');
+    }
+
+    function triggerUpload(ctx) {
+      if (!currentAdminToken) return;
+      activeUploadContext = ctx;
+      document.getElementById('generalFileInput').click();
+    }
+
+    function handleGeneralUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (activeUploadContext === 'wali') {
+          appState.wali.photo = reader.result;
+        } else if (activeUploadContext === 'student' && selectedStudentIndex !== null) {
+          appState.students[selectedStudentIndex].photo = reader.result;
+          document.getElementById('modalStuPhoto').src = reader.result;
+        }
+        saveState();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function uploadFotoGaleri(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (!appState.galeri) appState.galeri = [];
+        appState.galeri.unshift(reader.result);
+        saveState();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function deleteGaleri(idx) {
+      appState.galeri.splice(idx, 1);
+      saveState();
+    }
+
+    // AUDIO CONTROLLER
+    function toggleAudio() {
+      const audio = document.getElementById('audioElement');
+      const icon = document.getElementById('audioIcon');
+      const status = document.getElementById('audioStatus');
+      const dock = document.getElementById('audioDock');
+
+      if (audio.paused) {
+        audio.play();
+        icon.classList.add('vinyl-spin');
+        dock.classList.add('playing');
+        status.innerText = 'Sedang diputar';
+      } else {
+        audio.pause();
+        icon.classList.remove('vinyl-spin');
+        dock.classList.remove('playing');
+        status.innerText = 'Dijeda';
+      }
+    }
+
+    // SINKRONISASI & BACKUP
+    async function syncToServer(showAlert) {
+      const statusEl = document.getElementById('syncStatusText');
+      if (statusEl) statusEl.innerText = 'Menyimpan...';
+      try {
+        const res = await fetch(CLOUD_DATA_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(appState)
+        });
+        if (res.ok && showAlert) alert('Berhasil dipublikasikan ke Server!');
+      } catch (e) {
+        if (showAlert) alert('Tersimpan di browser lokal. Gunakan tombol Unduh HTML jika ingin mengunggah manual.');
+      } finally {
+        if (statusEl) statusEl.innerText = 'Admin Mode';
+      }
+    }
+
+    function exportUpdatedHTML() {
+      let htmlContent = document.documentElement.outerHTML;
+      const newStateBlock = `/*__STATE_START__*/\n    const defaultState = ${JSON.stringify(appState, null, 2)};\n    /*__STATE_END__*/`;
+      htmlContent = htmlContent.replace(/\/\*__STATE_START__\*\/[\s\S]*?\/\*__STATE_END__\*\//, newStateBlock);
+      const blob = new Blob(['<!DOCTYPE html>\n' + htmlContent], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'backup_ixc_sekar.json';
+      a.click();
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          appState = JSON.parse(reader.result);
+          saveState();
+          alert('Data berhasil dipulihkan!');
+        } catch (err) {
+          alert('File JSON tidak valid.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // PARTIKEL BINTANG RINGAN DI BACKGROUND
+    function initParticles() {
+      const canvas = document.getElementById('bgCanvas');
+      const ctx = canvas.getContext('2d');
+      let w, h, particles = [];
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 45; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.8 + 0.5,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h;
+          if (p.y > h) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initApp();
+      startLiveClockAndCountdown();
+      initParticles();
+    });
+  </script>
+</body>
+</html>
