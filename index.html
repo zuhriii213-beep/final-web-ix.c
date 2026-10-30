@@ -538,7 +538,7 @@
 
   <!-- ENGINE JAVASCRIPT -->
   <script>
-    const STORAGE_KEY = 'spensakar_ixc_data_v2';
+    const STORAGE_KEY = 'spensakar_ixc_data_v3';
     const CLOUD_DATA_ENDPOINT = '/api/data';
     const ADMIN_PIN = 'ixcsekar';
 
@@ -618,11 +618,20 @@
 
     let appState = JSON.parse(JSON.stringify(defaultState));
 
+    // Fungsi untuk mendeteksi apakah daftar siswa masih berisi dummy lama ("Siswa 4", dll.)
+    function hasOldPlaceholderNames(studentsList) {
+      if (!Array.isArray(studentsList) || studentsList.length < 31) return true;
+      return studentsList.some(s => /^Siswa\s+\d+$/i.test((s.name || '').trim()));
+    }
+
     async function initApp() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
+          if (hasOldPlaceholderNames(parsed.students)) {
+            parsed.students = JSON.parse(JSON.stringify(defaultState.students));
+          }
           appState = { ...defaultState, ...parsed };
         } catch (e) { console.error(e); }
       }
@@ -633,6 +642,10 @@
         if (res.ok) {
           const cloudData = await res.json();
           if (cloudData && cloudData.students) {
+            // Jika server masih mengirim nama dummy "Siswa 4", paksa ganti dengan 31 nama asli
+            if (hasOldPlaceholderNames(cloudData.students)) {
+              cloudData.students = JSON.parse(JSON.stringify(defaultState.students));
+            }
             appState = { ...defaultState, ...cloudData };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
             renderAll();
